@@ -1,8 +1,8 @@
 "use client";
 
 
-import { API_BASE_PATH, packageList } from '@/lib/apiPath';
-import { FROM_POP_UP_TYPE } from '@/lib/constant';
+import { API_BASE_PATH, deletePack, packageList } from '@/lib/apiPath';
+import { FROM_POP_UP_TYPE, actionList } from '@/lib/constant';
 import { premiumTableHeader, tableData } from '@/lib/tableHelper'
 import { ModelDataProps } from '@/lib/types';
 import { Button, ButtonContainer } from '@/styles/globalStyles';
@@ -76,6 +76,65 @@ const [packagesList,setPackagesList]=useState([]);
       show: false,
       type: 0,
     })}
+
+    // delete package
+    const deletePackage=async (id:number)=>{
+    await axios
+      .get(API_BASE_PATH + deletePack + id, {
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+      })
+      .then(
+        (response) => {
+          if (response.data.responseCode === 100001) {
+            Swal.fire({
+              icon: 'success',
+              title: `success`,
+              showConfirmButton: true,
+             
+            })
+             getFeedBack() 
+
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: `Something went wrong`,
+              showConfirmButton: true,
+             
+            })
+          }
+        },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: `${error}`,
+            showConfirmButton: true,
+           
+          })
+        }
+      );
+  }
+    // handle action
+    const actionHandle=(id:number,action:number)=>{
+      if(actionList.delete===action){ 
+          Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to Delete.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result:any) => {
+      if (result.isConfirmed) {
+        
+        
+        deletePackage(id);
+      }
+    })
+      }
+      console.log(id,action);
+      
+    }
   
 
   return (
@@ -87,7 +146,7 @@ const [packagesList,setPackagesList]=useState([]);
           type: 1,
         })}>Add Package</Button></ButtonContainer>
 
-      <Table columns={premiumTableHeader} data={packagesList}   pageSize={10}
+      <Table columns={premiumTableHeader(actionHandle)} data={packagesList}   pageSize={10}
       fixedPages={fixedPages}
       onClickPage={pageClick}/>
        {modelData.show && (

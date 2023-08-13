@@ -5,38 +5,93 @@ import styled from "styled-components";
 import * as FaIcons from "react-icons/fa";
 import * as MdIcons from "react-icons/md";
 import * as GrIcons from "react-icons/gr";
+import { actionList } from "./constant";
+export const premiumTableHeader = (actionHandle: Function) => {
+  return [
+    {
+      Header: "Package id",
+      accessor: "pack_id",
+    },
+    {
+      Header: "Package Title",
+      accessor: "package_name",
+    },
+    {
+      Header: "Prize",
+      accessor: "prize",
+    },
+    {
+      Header: "Duration",
+      accessor: "duration",
+    },
+    {
+      Header: "Created At",
+      accessor: "created_at",
+    },
+    ,
+    {
+      Header: "Action",
+      accessor: "action",
+      Cell: ({
+        row,
+      }: {
+        row: {
+          getToggleRowSelectedProps: any;
+          original: {
+            pack_id: number;
+          };
+        };
+      }) => {
+        return (
+          <TableDiv>
+            <FieldIcon
+              onClick={() =>
+                actionHandle(row.original.pack_id, actionList.edit)
+              }
+            >
+              <FaIcons.FaEdit />
+            </FieldIcon>
+            <FieldIcon
+              onClick={() =>
+                actionHandle(row.original.pack_id, actionList.delete)
+              }
+            >
+              <MdIcons.MdDelete />
+            </FieldIcon>
+          </TableDiv>
+        );
+      },
+    },
+  ];
+};
 
-export const premiumTableHeader = [
+export const photographerTableHeader = [
   {
-    Header: "Package id",
-    accessor: "pack_id",
+    Header: "Name",
+    accessor: "photographer_name",
   },
   {
-    Header: "Package Title",
-    accessor: "package_name",
+    Header: "Company",
+    accessor: "company",
   },
   {
-    Header: "Prize",
-    accessor: "prize",
+    Header: "Contact",
+    accessor: "contact",
   },
   {
-    Header: "Duration",
-    accessor: "duration",
+    Header: "Details",
+    accessor: "details",
   },
   {
-    Header: "Created At",
-    accessor: "created_at",
-  },
-  ,{
-    Header: 'Action',
-    accessor: 'action',
+    Header: "Action",
+    accessor: "action",
     Cell: ({
       row,
     }: {
       row: {
         getToggleRowSelectedProps: any;
         original: {
-          user_id: number;
+          photographer_id: number;
           user_name: string;
         };
       };
@@ -44,8 +99,9 @@ export const premiumTableHeader = [
       return (
         <TableDiv>
           <FieldIcon>
-            <FaIcons.FaEdit />
+            <GrIcons.GrView />
           </FieldIcon>
+
           <FieldIcon>
             <MdIcons.MdDelete />
           </FieldIcon>
@@ -53,119 +109,74 @@ export const premiumTableHeader = [
       );
     },
   },
-  ]
- 
-   
-
-
-export const photographerTableHeader = [{
-  Header: 'Name',
-  accessor: 'photographer_name'
-},
-{
-  Header: 'Company',
-  accessor: 'company'
-}, {
-  Header: 'Contact',
-  accessor: 'contact'
-}, {
-  Header: 'Details',
-  accessor: 'details'
-},{
-  Header: 'Action',
-  accessor: 'action',
-  Cell: ({
-    row,
-  }: {
-    row: {
-      getToggleRowSelectedProps: any;
-      original: {
-        photographer_id: number;
-        user_name: string;
-      };
-    };
-  }) => {
-    return (
-      <TableDiv>
-          <FieldIcon>
-          <GrIcons.GrView />
-        </FieldIcon>
-       
-        <FieldIcon>
-          <MdIcons.MdDelete />
-        </FieldIcon>
-      </TableDiv>
-    );
+];
+export const userManagementTableHeader = [
+  {
+    Header: "User id",
+    accessor: "user_id",
   },
-},
-]
-export const userManagementTableHeader = [{
-  Header: 'User id',
-  accessor: 'user_id'
-},
-{
-  Header: 'User Name',
-  accessor: 'user_name'
-}, {
-  Header: 'User Email',
-  accessor: 'email'
-}, {
-  Header: 'User Contact',
-  accessor: 'contact'
-}, {
-  Header: 'User Address',
-  accessor: 'address',
+  {
+    Header: "User Name",
+    accessor: "user_name",
+  },
+  {
+    Header: "User Email",
+    accessor: "email",
+  },
+  {
+    Header: "User Contact",
+    accessor: "contact",
+  },
+  {
+    Header: "User Address",
+    accessor: "address",
+  },
+];
 
-},
-]
-
-export const userManagementData = [{
-  user_id: '123456789-',
-  user_name: "<NAME>",
-  email: "<EMAIL>",
-  contact: "987654321",
-  address: "Bangalore",
-},
-{
-  user_id: '123456789-',
-  user_name: "<NAME>",
-  email: "<EMAIL>",
-  contact: "987654321",
-  address: "Bangalore",
-},
-{
-  user_id: '123456789-',
-  user_name: "<NAME>",
-  email: "<EMAIL>",
-  contact: "987654321",
-  address: "Bangalore",
-},
-{
-  user_id: '123456789-',
-  user_name: "<NAME>",
-  email: "<EMAIL>",
-  contact: "987654321",
-  address: "Bangalore",
-},
-{
-  user_id: '123456789-',
-  user_name: "<NAME>",
-  email: "<EMAIL>",
-  contact: "987654321",
-  address: "Bangalore",
-},
-{
-  user_id: '123456789-',
-  user_name: "<NAME>",
-  email: "<EMAIL>",
-  contact: "987654321",
-  address: "Bangalore",
-}]
-
-
-
-
-
+export const userManagementData = [
+  {
+    user_id: "123456789-",
+    user_name: "<NAME>",
+    email: "<EMAIL>",
+    contact: "987654321",
+    address: "Bangalore",
+  },
+  {
+    user_id: "123456789-",
+    user_name: "<NAME>",
+    email: "<EMAIL>",
+    contact: "987654321",
+    address: "Bangalore",
+  },
+  {
+    user_id: "123456789-",
+    user_name: "<NAME>",
+    email: "<EMAIL>",
+    contact: "987654321",
+    address: "Bangalore",
+  },
+  {
+    user_id: "123456789-",
+    user_name: "<NAME>",
+    email: "<EMAIL>",
+    contact: "987654321",
+    address: "Bangalore",
+  },
+  {
+    user_id: "123456789-",
+    user_name: "<NAME>",
+    email: "<EMAIL>",
+    contact: "987654321",
+    address: "Bangalore",
+  },
+  {
+    user_id: "123456789-",
+    user_name: "<NAME>",
+    email: "<EMAIL>",
+    contact: "987654321",
+    address: "Bangalore",
+  },
+];
 
 export const tableData = [
   {
@@ -219,24 +230,22 @@ export const tableData = [
   },
 ];
 
-
-
 export const photographerManagementData = [
   {
-  photographer_id: '123456789-',
-  photographer_name: "<NAME>",
-  company: "<EMAIL>",
-  contact: "987654321",
-  details: "Bangalore",
-},
-{
-  photographer_id: '123456789-',
-  photographer_name: "<NAME>",
-  company: "<EMAIL>",
-  contact: "987654321",
-  details: "Bangalore",
-},
-]
+    photographer_id: "123456789-",
+    photographer_name: "<NAME>",
+    company: "<EMAIL>",
+    contact: "987654321",
+    details: "Bangalore",
+  },
+  {
+    photographer_id: "123456789-",
+    photographer_name: "<NAME>",
+    company: "<EMAIL>",
+    contact: "987654321",
+    details: "Bangalore",
+  },
+];
 export const feedBackTableHeader = [
   {
     Header: "S.NO.",
@@ -287,5 +296,3 @@ const TableDiv = styled.main`
   align-items: center;
   justify-content: center;
 `;
-
-

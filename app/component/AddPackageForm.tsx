@@ -141,7 +141,12 @@ const AddPackageForm: React.FC<addPackageProps> = ({onclose=() =>{}}) => {
                 </FieldContainer>
 
                 <ButtonContainer>
-
+<Button onClick={(e) => {
+               
+                 onclose()
+              }}>
+                    Cancel
+                  </Button>
                   <Button onClick={submit}>
                     Submit
                   </Button>
@@ -184,4 +189,5 @@ const ButtonContainer = styled.div`
   display:flex ;
   justify-content: center;
   margin-top: 1rem;
+  gap: 1rem;
 `
