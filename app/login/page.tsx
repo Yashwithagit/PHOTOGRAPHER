@@ -27,7 +27,7 @@ const Login = () => {
   const [login, setLogin] = useState({
     email: "",
     password: "",
-    type: 1,
+   
 
   });
   const router = useRouter();
@@ -57,7 +57,7 @@ const Login = () => {
               if (result.isDismissed) {
                 /* Read more about handling dismissals below */
                 localStorage.setItem("token", response.data.responseData[0].user_id);
-                localStorage.setItem("type", JSON.stringify(login.type));
+               
                 router.push("/dashBoard");
               }
             })
@@ -88,18 +88,9 @@ const Login = () => {
       <CardContainer>
 
         <CardHeader>Login</CardHeader>
-        <h4>Admin Panel</h4>
+        <h4>Photographer Panel</h4>
         <FormContainer onSubmit={handleSubmit}>
-        <SelectField
-        initialValue={login.type}
-name={"type"}
-type={"select"}
-label={""}
-onChange={(e: { target: { value: any; }; }) =>{console.log(e.target.value);
- setLogin({ ...login, type: e.target.value })}}
-
-options={TypeList}
-/>
+        
           <FormField>
             <FormFieldIcon>
               <MdIcons.MdEmail />
@@ -129,12 +120,12 @@ options={TypeList}
           <SubmitButton type="submit">LOGIN</SubmitButton>
 
         </FormContainer>
-        {login.type==2 && <LinkContainer>
+        <LinkContainer>
           Don&#x27;t have account?
           <Link href={"/signUp"}>
             <LinkText>Signup </LinkText>
           </Link>
-        </LinkContainer>}
+        </LinkContainer>
        
       </CardContainer>
     </>

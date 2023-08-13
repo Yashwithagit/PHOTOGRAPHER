@@ -51,3 +51,8 @@ export const TypeList = [
   },
  
 ];
+export const actionList={
+    edit: 1,
+    delete: 2,
+     view: 3,
+  }

@@ -1,12 +1,19 @@
 import {
   FaHome,
-  FaListUl,
+  FaRegistered,
   FaMoneyCheckAlt,
   FaPenSquare,
-  FaUserEdit,
   FaUserFriends,
   FaSignOutAlt
 } from "react-icons/fa";
+import {
+  MdEvent
+  
+} from "react-icons/md";
+import {
+ GrGallery
+  
+} from "react-icons/gr";
 
 type MenuOption = {
   name: string;
@@ -19,63 +26,36 @@ const MENU_OPTIONS: MenuOption[] = [
   {
     name: "Dashboard",
     icon: FaHome,
-    url: "/",
+    url: "/dashBoard",
   },
-  // {
-  //   name: "Orders",
-  //   icon: FaListUl,
-  //   url: "/orders",
-  //   subItems: [
-  //     {
-  //       name: "New",
-  //       icon: FaListUl,
-  //       url: "/new-orders",
-  //     },
-  //     {
-  //       name: "Completed",
-  //       icon: FaListUl,
-  //       url: "/completed-orders",
-  //     },
-  //   ],
-  // },
-  // {
-  //   name: "Customers",
-  //   icon:FaListUl,
-  //   url: "/customers",
-  //   subItems: [
-  //     {
-  //       name: "Corporate",
-  //       icon: FaListUl,
-  //       url: "/corporate",
-  //     },
-  //     {
-  //       name: "SMB",
-  //       icon: FaListUl,
-  //       url: "/smb",
-  //       subItems: [
-  //         {
-  //           name: "Retail",
-  //           icon: FaListUl,
-  //           url: "/retail",
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
+  
+  
+  
   {
-    name: "User Management",
+    name: "Client/ Users",
     icon: FaUserFriends,
     url: "/userManagement",
   },
+   
   {
-    name: "Photographer Management",
-    icon: FaUserEdit,
-    url: "/photographerManagement",
+    name: "Events",
+    icon: MdEvent,
+    url: "/events",
   },
   {
-    name: "Premium",
+    name: "Registration",
+    icon: FaRegistered,
+    url: "/registration",
+  },
+  {
+    name: "Services",
     icon: FaMoneyCheckAlt,
     url: "/premium",
+  },
+  {
+    name: "Gallery",
+    icon: GrGallery,
+    url: "/gallery",
   },
   {
     name: "Feed Back",

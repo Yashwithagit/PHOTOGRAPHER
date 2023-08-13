@@ -1,11 +1,12 @@
 "use client";
 
-import { FieldIcon, FormFieldIcon } from "@/styles/globalStyles";
+import { FieldIcon } from "@/styles/globalStyles";
 import styled from "styled-components";
 import * as FaIcons from "react-icons/fa";
 import * as MdIcons from "react-icons/md";
 import * as GrIcons from "react-icons/gr";
 import { actionList } from "./constant";
+
 export const premiumTableHeader = (actionHandle: Function) => {
   return [
     {
@@ -64,7 +65,79 @@ export const premiumTableHeader = (actionHandle: Function) => {
     },
   ];
 };
-
+export const eventsTableHeader = (actionHandle: Function) => {
+  return [
+    {
+      Header: "Title",
+      accessor: "pack_id",
+    },
+    {
+      Header: "Discription",
+      accessor: "package_name",
+    },
+    {
+      Header: "Location",
+      accessor: "prize",
+    },
+    {
+      Header: "Status",
+      accessor: "status",
+    },
+    {
+      Header: "Event Date",
+      accessor: "event_date",
+    },
+    {
+      Header: "Created At",
+      accessor: "created_at",
+    },
+     {
+      Header: "Published",
+      accessor: "published",
+    },
+    ,
+    {
+      Header: "Action",
+      accessor: "action",
+      Cell: ({
+        row,
+      }: {
+        row: {
+          getToggleRowSelectedProps: any;
+          original: {
+            pack_id: number;
+          };
+        };
+      }) => {
+        return (
+          <TableDiv>
+             <FieldIcon
+              onClick={() =>
+                actionHandle(row.original.pack_id, actionList.view)
+              }
+            >
+              <GrIcons.GrView />
+            </FieldIcon>
+            <FieldIcon
+              onClick={() =>
+                actionHandle(row.original.pack_id, actionList.edit)
+              }
+            >
+              <FaIcons.FaEdit />
+            </FieldIcon>
+            <FieldIcon
+              onClick={() =>
+                actionHandle(row.original.pack_id, actionList.delete)
+              }
+            >
+              <MdIcons.MdDelete />
+            </FieldIcon>
+          </TableDiv>
+        );
+      },
+    },
+  ];
+};
 export const photographerTableHeader = [
   {
     Header: "Name",
