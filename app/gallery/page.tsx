@@ -5,7 +5,7 @@ import { API_BASE_PATH, deletePack, packageList } from '@/lib/apiPath';
 import { FROM_POP_UP_TYPE, actionList } from '@/lib/constant';
 import { premiumTableHeader, tableData } from '@/lib/tableHelper'
 import { ModelDataProps } from '@/lib/types';
-import { Button, ButtonContainer } from '@/styles/globalStyles';
+import { Button, ButtonContainer, FieldIcon } from '@/styles/globalStyles';
 import AddPackageForm from 'app/component/AddPackageForm';
 import PopUp from 'app/component/PopUp';
 import DashboardLayout from 'app/component/DashboardLayout';
@@ -17,7 +17,12 @@ import { Router } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import { styled } from 'styled-components';
-
+import {
+  FcEditImage
+} from "react-icons/fc";
+import {
+  MdDeleteForever
+} from "react-icons/md";
 
 const Gallery: NextPage = () => {
   const [modelData, setModelData] = useState<ModelDataProps>({
@@ -142,7 +147,10 @@ const [packagesList,setPackagesList]=useState([]);
 
       <ButtonContainer>  <Button onClick={() => router.push('/gallery/uploadImage')}>Upload photos</Button></ButtonContainer>
  <OuterContainer>
-      <GalleryContainer> <GalleryImgContainer></GalleryImgContainer>
+      <GalleryContainer> <GalleryImgContainer>
+        <GalleryImg src='/assets/bg.jpg'></GalleryImg>
+        <GalleryImgBottom>text text text
+             <div><FieldIcon><FcEditImage/></FieldIcon> <FieldIcon> <MdDeleteForever/> </FieldIcon></div> </GalleryImgBottom></GalleryImgContainer>
        <GalleryImgContainer></GalleryImgContainer>
         <GalleryImgContainer></GalleryImgContainer>
          <GalleryImgContainer></GalleryImgContainer></GalleryContainer>
@@ -177,11 +185,28 @@ const GalleryImg = styled.img`
   width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 1.5rem;
+    
 `;
-const GalleryImgContainer = styled.div`
+const GalleryImgContainer = styled.figure`
  background-color: blue;
   width: 18rem;
     height: 18rem;
      box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.4);
 border-radius: 1.5rem;
+ position: relative;
+`;
+const GalleryImgBottom = styled.figcaption`
+ background-color: rgba(0, 0, 0, 0.4);
+  position: absolute;
+   bottom: 0rem;
+   align-items: center;
+    justify-content: space-between;
+   padding: 0rem 1rem;
+   display: flex;
+   width: 100%;
+   height: 3rem;
+   border-radius: 0rem 0rem 1.5rem 1.5rem;
+   font-size: 1.5rem;
+   
 `;
