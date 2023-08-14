@@ -15,6 +15,7 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
+import AddEventForm from 'app/component/AddEventForm';
 
 
 const Events: NextPage = () => {
@@ -150,7 +151,7 @@ const [packagesList,setPackagesList]=useState([]);
       onClickPage={pageClick}/>
        {modelData.show && (
         <PopUp popUptype={FROM_POP_UP_TYPE}>
-        <AddPackageForm onclose={handleFormClose}/>
+        <AddEventForm onclose={handleFormClose}/>
         </PopUp>
       )}
    

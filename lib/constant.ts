@@ -40,14 +40,41 @@ export const DurationList = [
     value: 3,
   },
 ];
-export const TypeList = [
+export const StatusType = [
   {
-    label: "Admin",
+    label: "Draft",
     value: 1,
   },
   {
-    label: "Photographer",
+    label: "Publish",
     value: 2,
+  },
+ 
+];
+export const EventType = [
+  {
+    label: "Gold",
+    value: 1,
+  },
+  {
+    label: "Premier",
+    value: 2,
+  },
+   {
+    label: "Elegant",
+    value: 3,
+  },
+   {
+    label: "Premier",
+    value: 4,
+  },
+   {
+    label: "Classic",
+    value: 5,
+  },
+   {
+    label: "Delight",
+    value: 6,
   },
  
 ];
@@ -55,4 +82,5 @@ export const actionList={
     edit: 1,
     delete: 2,
      view: 3,
+     book: 4,
   }

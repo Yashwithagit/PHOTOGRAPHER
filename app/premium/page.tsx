@@ -88,7 +88,7 @@ const [packagesList,setPackagesList]=useState([]);
           if (response.data.responseCode === 100001) {
             Swal.fire({
               icon: 'success',
-              title: `success`,
+              title: `Package has been Booked`,
               showConfirmButton: true,
              
             })
@@ -114,11 +114,11 @@ const [packagesList,setPackagesList]=useState([]);
       );
   }
     // handle action
-    const actionHandle=(id:number,action:number)=>{
-      if(actionList.delete===action){ 
+    const actionHandle=(id:number)=>{
+       
           Swal.fire({
       title: 'Are you sure?',
-      text: "You want to Delete.",
+      text: "You want to Book a Package.",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -131,8 +131,7 @@ const [packagesList,setPackagesList]=useState([]);
         deletePackage(id);
       }
     })
-      }
-      console.log(id,action);
+    
       
     }
   

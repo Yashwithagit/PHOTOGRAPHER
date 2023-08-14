@@ -5,6 +5,7 @@ import styled from "styled-components";
 import * as FaIcons from "react-icons/fa";
 import * as MdIcons from "react-icons/md";
 import * as GrIcons from "react-icons/gr";
+import * as BsIcons from "react-icons/bs";
 import { actionList } from "./constant";
 
 export const premiumTableHeader = (actionHandle: Function) => {
@@ -47,18 +48,13 @@ export const premiumTableHeader = (actionHandle: Function) => {
           <TableDiv>
             <FieldIcon
               onClick={() =>
-                actionHandle(row.original.pack_id, actionList.edit)
+                actionHandle(row.original.pack_id)
               }
             >
-              <FaIcons.FaEdit />
+              <BsIcons.BsFillBookmarkPlusFill
+ />
             </FieldIcon>
-            <FieldIcon
-              onClick={() =>
-                actionHandle(row.original.pack_id, actionList.delete)
-              }
-            >
-              <MdIcons.MdDelete />
-            </FieldIcon>
+           
           </TableDiv>
         );
       },
