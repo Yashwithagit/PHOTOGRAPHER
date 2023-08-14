@@ -337,16 +337,16 @@ export const feedBackTableHeader = [
       row: {
         getToggleRowSelectedProps: any;
         original: {
-          user_id: number;
-          user_name: string;
+         
+          email: string;
         };
       };
     }) => {
       return (
         <TableDiv>
-          <FieldIcon>
+          <a href={`mailto:${row.original.email}`}>
             <MdIcons.MdContactMail />
-          </FieldIcon>
+          </a>
         </TableDiv>
       );
     },
