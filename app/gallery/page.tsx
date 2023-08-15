@@ -135,6 +135,7 @@ const [imageList,setImageList]=useState([]);
     }
   
  const isAuthenticated = useAuth();
+console.log(imageList.map((item:any,index) => item.image));
 
   if (!isAuthenticated) {
     // Handle authentication redirection or rendering an unauthorized message
@@ -146,7 +147,8 @@ const [imageList,setImageList]=useState([]);
       <ButtonContainer>  <Button onClick={() => router.push('/gallery/uploadImage')}>Upload photos</Button></ButtonContainer>
  <OuterContainer>
       <GalleryContainer>
-         {imageList.map((item:any,index) => (
+         {imageList.length!==0&&imageList.map((item:any,index) => (
+         
         <GalleryImgContainer key={index}>
         <GalleryImg src={`data:image/png;base64,${convertArrayBufferToBase64(item.image)}`} ></GalleryImg>
         <GalleryImgBottom>{item.title}

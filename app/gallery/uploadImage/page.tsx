@@ -105,20 +105,25 @@ const UploadImage: React.FC = () => {
     return <LoadingSpinner></LoadingSpinner>;
   }
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.result && typeof reader.result === 'string') {
-          setBase64Image((reader.result).substring("data:image/png;base64,".length));
-        }
-      };
-      reader.readAsDataURL(file);
+      convertToBase64(file);
     }
-   
-    
+  };
+  const convertToBase64 = (file: File) => {
+    const reader = new FileReader();
+
+    reader.onload = (event: ProgressEvent<FileReader>) => {
+      if (event.target) {
+        const base64String = event.target.result as string;
+        const base64Image = base64String.split(",")[1];
+        console.log(base64Image);
+        setBase64Image(base64Image);
+      }
+    };
+
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -195,7 +200,7 @@ const UploadImage: React.FC = () => {
                     type={"file"}
                     label={"Name"}
                   acceptType='image/*'
-                    onChange={handleImageUpload}
+                    onChange={handleImageChange}
                    
                   />
 
