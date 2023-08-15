@@ -65,15 +65,15 @@ export const eventsTableHeader = (actionHandle: Function) => {
   return [
     {
       Header: "Title",
-      accessor: "pack_id",
+      accessor: "title",
     },
     {
-      Header: "Discription",
-      accessor: "package_name",
+      Header: "Description",
+      accessor: "description",
     },
     {
       Header: "Location",
-      accessor: "prize",
+      accessor: "location",
     },
     {
       Header: "Status",
@@ -89,7 +89,7 @@ export const eventsTableHeader = (actionHandle: Function) => {
     },
      {
       Header: "Published",
-      accessor: "published",
+      accessor: "updated_at",
     },
     ,
     {
@@ -101,7 +101,7 @@ export const eventsTableHeader = (actionHandle: Function) => {
         row: {
           getToggleRowSelectedProps: any;
           original: {
-            pack_id: number;
+            event_id: number;
           };
         };
       }) => {
@@ -109,21 +109,21 @@ export const eventsTableHeader = (actionHandle: Function) => {
           <TableDiv>
              <FieldIcon
               onClick={() =>
-                actionHandle(row.original.pack_id, actionList.view)
+                actionHandle(row.original.event_id, actionList.view)
               }
             >
               <GrIcons.GrView />
             </FieldIcon>
             <FieldIcon
               onClick={() =>
-                actionHandle(row.original.pack_id, actionList.edit)
+                actionHandle(row.original.event_id, actionList.edit)
               }
             >
               <FaIcons.FaEdit />
             </FieldIcon>
             <FieldIcon
               onClick={() =>
-                actionHandle(row.original.pack_id, actionList.delete)
+                actionHandle(row.original.event_id, actionList.delete)
               }
             >
               <MdIcons.MdDelete />

@@ -25,10 +25,10 @@ const Events: NextPage = () => {
     type: 0,
   });
 const router=useRouter();
-const [packagesList,setPackagesList]=useState([]);
+const [eventList,setEventList]=useState([]);
   const [pageList,setPageList]=useState([]);
   const [fixedPages,setFixedPages]=useState(0)
-  const getFeedBack=async ()=>{
+  const getEventList=async ()=>{
     await axios
       .get(API_BASE_PATH + packageList, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -40,7 +40,7 @@ const [packagesList,setPackagesList]=useState([]);
                 item['index']=index+1
                 return item
             })
-           setPackagesList(newData)
+           setEventList(newData)
            setPageList(newData)
            setFixedPages(newData.length)
 
@@ -64,10 +64,10 @@ const [packagesList,setPackagesList]=useState([]);
       );
   }
   useEffect(()=>{
-   getFeedBack() 
+   getEventList() 
   },[])
   const pageClick=(id:number)=>{
-    const newArray = packagesList.slice(((id*10)-10));
+    const newArray = eventList.slice(((id*10)-10));
     setPageList(newArray)
   }
   const handleFormClose=()=>{
@@ -78,7 +78,7 @@ const [packagesList,setPackagesList]=useState([]);
     })}
 
     // delete package
-    const deletePackage=async (id:number)=>{
+    const deleteEvent=async (id:number)=>{
     await axios
       .get(API_BASE_PATH + deletePack + id, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -92,7 +92,7 @@ const [packagesList,setPackagesList]=useState([]);
               showConfirmButton: true,
              
             })
-             getFeedBack() 
+             getEventList() 
 
           } else {
             Swal.fire({
@@ -128,7 +128,7 @@ const [packagesList,setPackagesList]=useState([]);
       if (result.isConfirmed) {
         
         
-        deletePackage(id);
+        deleteEvent(id);
       }
     })
       }
@@ -146,7 +146,7 @@ const [packagesList,setPackagesList]=useState([]);
           type: 1,
         })}>Add Event</Button></ButtonContainer>
 
-      <Table columns={eventsTableHeader(actionHandle)} data={packagesList}   pageSize={10}
+      <Table columns={eventsTableHeader(actionHandle)} data={eventList}   pageSize={10}
       fixedPages={fixedPages}
       onClickPage={pageClick}/>
        {modelData.show && (

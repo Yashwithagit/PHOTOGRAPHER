@@ -23,6 +23,8 @@ import {
 import {
   MdDeleteForever
 } from "react-icons/md";
+import { useAuth } from '@/context/auth';
+import LoadingSpinner from 'app/component/LoadingSpinner';
 
 const Gallery: NextPage = () => {
   const [modelData, setModelData] = useState<ModelDataProps>({
@@ -31,10 +33,9 @@ const Gallery: NextPage = () => {
     type: 0,
   });
 const router=useRouter();
-const [packagesList,setPackagesList]=useState([]);
-  const [pageList,setPageList]=useState([]);
-  const [fixedPages,setFixedPages]=useState(0)
-  const getFeedBack=async ()=>{
+const [imageList,setImageList]=useState([]);
+ 
+  const getImageList=async ()=>{
     await axios
       .get(API_BASE_PATH + packageList, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -46,10 +47,8 @@ const [packagesList,setPackagesList]=useState([]);
                 item['index']=index+1
                 return item
             })
-           setPackagesList(newData)
-           setPageList(newData)
-           setFixedPages(newData.length)
-
+           setImageList(newData)
+          
           } else {
             Swal.fire({
               icon: 'error',
@@ -70,18 +69,9 @@ const [packagesList,setPackagesList]=useState([]);
       );
   }
   useEffect(()=>{
-   getFeedBack() 
+   getImageList() 
   },[])
-  const pageClick=(id:number)=>{
-    const newArray = packagesList.slice(((id*10)-10));
-    setPageList(newArray)
-  }
-  const handleFormClose=()=>{
-    setModelData({
-      ...modelData,
-      show: false,
-      type: 0,
-    })}
+ 
 
     // delete package
     const deletePackage=async (id:number)=>{
@@ -94,11 +84,11 @@ const [packagesList,setPackagesList]=useState([]);
           if (response.data.responseCode === 100001) {
             Swal.fire({
               icon: 'success',
-              title: `Package has been Booked`,
+              title: `Image has been Deleted from Gallery`,
               showConfirmButton: true,
              
             })
-             getFeedBack() 
+             getImageList() 
 
           } else {
             Swal.fire({
@@ -120,11 +110,11 @@ const [packagesList,setPackagesList]=useState([]);
       );
   }
     // handle action
-    const actionHandle=(id:number)=>{
-       
+    const actionHandle=(id:number,action:number)=>{
+       if(action===actionList.delete){
           Swal.fire({
       title: 'Are you sure?',
-      text: "You want to Book a Package.",
+      text: "You want to Delete a Image.",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -137,11 +127,18 @@ const [packagesList,setPackagesList]=useState([]);
         deletePackage(id);
       }
     })
-    
+     }else {
+      router.push(`/gallery/uploadImage?id=${id}`)
+       }
       
     }
   
+ const isAuthenticated = useAuth();
 
+  if (!isAuthenticated) {
+    // Handle authentication redirection or rendering an unauthorized message
+    return <LoadingSpinner></LoadingSpinner>;
+  }
   return (
     <DashboardLayout>
 
@@ -150,7 +147,7 @@ const [packagesList,setPackagesList]=useState([]);
       <GalleryContainer> <GalleryImgContainer>
         <GalleryImg src='/assets/bg.jpg'></GalleryImg>
         <GalleryImgBottom>text text text
-             <div><FieldIcon><FcEditImage/></FieldIcon> <FieldIcon> <MdDeleteForever/> </FieldIcon></div> </GalleryImgBottom></GalleryImgContainer>
+             <div><FieldIcon onClick={() => actionHandle(1,actionList.edit)}><FcEditImage/></FieldIcon> <FieldIcon onClick={() => actionHandle(1,actionList.delete)}> <MdDeleteForever/> </FieldIcon></div> </GalleryImgBottom></GalleryImgContainer>
        <GalleryImgContainer></GalleryImgContainer>
         <GalleryImgContainer></GalleryImgContainer>
          <GalleryImgContainer></GalleryImgContainer></GalleryContainer>
