@@ -11,7 +11,7 @@ import { NextPage } from "next";
 import InputField from "app/component/HouseFormComponent/InputField";
 import SelectField from "app/component/HouseFormComponent/SelectField";
 import axios from "axios";
-import { API_BASE_PATH, addEvent, addPackage } from "@/lib/apiPath";
+import { API_BASE_PATH, addEvent, addPackage, upDateEvent } from "@/lib/apiPath";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "app/component/LoadingSpinner";
@@ -26,10 +26,12 @@ interface addEventProps {
   description?: string;
   image?: any;
   onclose?: Function;
+   data?:any
 }
 
-const AddEventForm: React.FC<addEventProps> = ({ onclose = () => {} }) => {
+const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
   const router = useRouter();
+   const[eventData,setEventData]=useState<any>(data?data:{})
   const [base64Image, setBase64Image] = useState<string | null>(null);
 
   const formValidation = (data: addEventProps) => {
@@ -52,6 +54,7 @@ const AddEventForm: React.FC<addEventProps> = ({ onclose = () => {} }) => {
   };
   const onFormSubmit = async (data: addEventProps) => {
     if (formValidation(data)) {
+       if(!eventData.event_id) {
       const req = {
         ...data,
         image: base64Image,
@@ -91,6 +94,41 @@ const AddEventForm: React.FC<addEventProps> = ({ onclose = () => {} }) => {
             });
           }
         );
+    }}else {
+ await axios
+        .post(API_BASE_PATH + upDateEvent+eventData.event_id, data, {
+          headers: { "content-type": "application/x-www-form-urlencoded" },
+        })
+        .then(
+          (response) => {
+            if (response.data.responseCode === 100001) {
+              Swal.fire({
+                icon: "success",
+              title: 'updated successfully',
+                showConfirmButton: false,
+                timer: 1000,
+              }).then((result) => {
+                if (result.isDismissed) {
+                  onclose();
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: `Invalid Event`,
+                showConfirmButton: true,
+              });
+            }
+          },
+          (error) => {
+            Swal.fire({
+              icon: "error",
+              title: `${error}`,
+              showConfirmButton: true,
+            });
+          }
+        );
+
     }
   };
   const isAuthenticated = useAuth();
@@ -158,6 +196,7 @@ const AddEventForm: React.FC<addEventProps> = ({ onclose = () => {} }) => {
                     name={"title"}
                     type={"text"}
                     label={"Name"}
+                     initialValue={eventData.title}
                     placeholder="Enter the Event Title"
                   />
                 </FieldContainer>
@@ -170,6 +209,7 @@ const AddEventForm: React.FC<addEventProps> = ({ onclose = () => {} }) => {
                     type={"text"}
                     label={"Name"}
                     placeholder=""
+                      initialValue={eventData.location}
                   />
                 </FieldContainer>
                 <FieldContainer>
@@ -179,6 +219,7 @@ const AddEventForm: React.FC<addEventProps> = ({ onclose = () => {} }) => {
                     type={"select"}
                     label={"Select Event Type"}
                     options={EventType}
+                      initialValue={eventData.event_type}
                   />
                 </FieldContainer>
                 <FieldContainer>
@@ -188,6 +229,7 @@ const AddEventForm: React.FC<addEventProps> = ({ onclose = () => {} }) => {
                     name={"event_date"}
                     type={"date"}
                     label={"Name"}
+                      initialValue={eventData.event_date}
                   />
                 </FieldContainer>
                 <FieldContainer>
@@ -197,6 +239,7 @@ const AddEventForm: React.FC<addEventProps> = ({ onclose = () => {} }) => {
                     type={"select"}
                     label={"Select Status"}
                     options={StatusType}
+                      initialValue={eventData.status}
                   />
                 </FieldContainer>
                 <FieldContainer>
@@ -207,6 +250,7 @@ const AddEventForm: React.FC<addEventProps> = ({ onclose = () => {} }) => {
                     type={"textArea"}
                     label={"Name"}
                     placeholder=""
+                    initialValue={eventData.description}
                   />
                 </FieldContainer>
                 <FieldContainer>
@@ -218,6 +262,7 @@ const AddEventForm: React.FC<addEventProps> = ({ onclose = () => {} }) => {
                     label={"Name"}
                     acceptType="image/*"
                     onChange={handleImageChange}
+                    initialValue={eventData.image}
                   />
                 </FieldContainer>
 

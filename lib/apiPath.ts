@@ -13,4 +13,10 @@ export const addGallery = "addGallery";
 export const galleryList = "galleryList";
 export const addPhotographer = "addPhotographer";
 export const loginPhotographer = "loginPhotographer";
+export const eventDetail = "eventDetail/";
+export const upDateEvent = "upDateEvent/";
+export const deleteEvent = "deleteEvent/";
+export const deleteGallery = "deleteGallery/";
+export const updateGallery = "updateGallery/";
+export const galleryDetail = "galleryDetail/";
 

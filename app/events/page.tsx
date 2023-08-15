@@ -1,7 +1,7 @@
 "use client";
 
 
-import { API_BASE_PATH, deletePack, eventList, packageList } from '@/lib/apiPath';
+import { API_BASE_PATH, deletePack, eventDetail, eventList, packageList } from '@/lib/apiPath';
 import { FROM_POP_UP_TYPE, actionList } from '@/lib/constant';
 import { eventsTableHeader, premiumTableHeader, tableData } from '@/lib/tableHelper'
 import { ModelDataProps } from '@/lib/types';
@@ -27,6 +27,7 @@ const Events: NextPage = () => {
 const router=useRouter();
 const [eventLists,setEventList]=useState([]);
   const [pageList,setPageList]=useState([]);
+    const [eventData,setEventData]=useState([])
   const [fixedPages,setFixedPages]=useState(0)
   const getEventList=async ()=>{
     await axios
@@ -80,7 +81,7 @@ const [eventLists,setEventList]=useState([]);
     // delete package
     const deleteEvent=async (id:number)=>{
     await axios
-      .get(API_BASE_PATH + deletePack + id, {
+      .get(API_BASE_PATH + deleteEvent + id, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
       })
       .then(
@@ -113,6 +114,35 @@ const [eventLists,setEventList]=useState([]);
         }
       );
   }
+  // event detail
+   const detailsEvent = async (id: number) => {
+    await axios
+      .get(API_BASE_PATH + eventDetail + id, {
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+      })
+      .then(
+        (response) => {
+          if (response.data.responseCode === 100001) {
+           setEventData(response.data.responseData)
+           setModelData({...modelData,type:id,show:true})
+           
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: `Something went wrong`,
+              showConfirmButton: true,
+            });
+          }
+        },
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: `${error}`,
+            showConfirmButton: true,
+          });
+        }
+      );
+  };
     // handle action
     const actionHandle=(id:number,action:number)=>{
       if(actionList.delete===action){ 
@@ -131,8 +161,9 @@ const [eventLists,setEventList]=useState([]);
         deleteEvent(id);
       }
     })
+      }else{
+     detailsEvent(id)
       }
-      console.log(id,action);
       
     }
   
@@ -157,7 +188,7 @@ console.log(fixedPages,pageList);
     />
        {modelData.show && (
         <PopUp popUptype={FROM_POP_UP_TYPE}>
-        <AddEventForm onclose={handleFormClose}/>
+        <AddEventForm onclose={handleFormClose} data={eventData}/>
         </PopUp>
       )}
    
