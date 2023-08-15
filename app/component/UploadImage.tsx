@@ -3,7 +3,7 @@
 import { AppColors, DurationList, EventType, StatusType } from '@/lib/constant';
 import { FieldLabelProps, PackageProps } from '@/lib/types';
 import { Button, CardContainer } from '@/styles/globalStyles'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 
 import { Form } from "houseform";
@@ -11,39 +11,53 @@ import { NextPage } from 'next';
 import InputField from 'app/component/HouseFormComponent/InputField';
 import SelectField from 'app/component/HouseFormComponent/SelectField';
 import axios from 'axios';
-import { API_BASE_PATH, addPackage } from '@/lib/apiPath';
+import { API_BASE_PATH, addGallery, addPackage } from '@/lib/apiPath';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import LoadingSpinner from 'app/component/LoadingSpinner';
 import { useAuth } from '@/context/auth';
 
 interface uploadImageProps { 
-    package_name?:string;
-    duration?:string;
-    prize?:number;
+    title?:string;
+    description?:string;
+    type?:number;
+    p_id?:number;
+    caption?:string;
+    image?:string;
    
 }
 
 const UploadImage: React.FC = () => {
+   const [base64Image, setBase64Image] = useState<string | null>(null);
     const router = useRouter();
-    const formValidation=(data:uploadImageProps) => { 
-        if(!data.duration|| !data.prize||  !data.package_name)
-        { Swal.fire({
-          icon: 'warning',
-            title: 'info',
-            text: 'Please Enter Mandatory Fields...',
+    const formValidation=(data:uploadImageProps) => {
+       
+        if(!data.title|| !data.description||  !data.caption||  !data.image||  !data.type )
+        { 
+          // Swal.fire({
+          // icon: 'warning',
+          //   title: 'info',
+          //   text: 'Please Enter Mandatory Fields...',
             
-          })
+          // })
+           console.log(data); 
           return false
 
         }else return true
 
     }
-  const onFormSubmit = async(data:uploadImageProps) => { 
+  const onFormSubmit = async(data:uploadImageProps) => {
+  
+     
     if(formValidation(data)){ 
-        console.log(data);
+         const req={
+          ...data,
+          p_id:1,
+          image:base64Image
+          }
+          console.log(req,data);
         await axios
-          .post(API_BASE_PATH + addPackage, data, {
+          .post(API_BASE_PATH + addGallery, req, {
             headers: { "content-type": "application/x-www-form-urlencoded" },
           })
           .then(
@@ -64,7 +78,7 @@ const UploadImage: React.FC = () => {
               } else {
                 Swal.fire({
                     icon: 'error',
-                    title: `Invalid package`,
+                    title: `Invalid Gallery Details`,
                     showConfirmButton: true,
                    
                   })
@@ -89,6 +103,23 @@ const UploadImage: React.FC = () => {
     // Handle authentication redirection or rendering an unauthorized message
     return <LoadingSpinner></LoadingSpinner>;
   }
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result && typeof reader.result === 'string') {
+          setBase64Image(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+   
+    
+  };
+
   return (
     <FormOuterContainer>
       <Form<uploadImageProps>
@@ -112,7 +143,7 @@ const UploadImage: React.FC = () => {
 
                     name={"type"}
                     type={"select"}
-                    label={"Select Event Type"}
+                    label={"Select Type"}
                  
                     options={EventType}
                   />
@@ -120,7 +151,7 @@ const UploadImage: React.FC = () => {
                   <FieldLabel>Title</FieldLabel>
                   <InputField
                     width='12.4rem'
-                    name={"package_name"}
+                    name={"title"}
                     type={"text"}
                     label={"Name"}
                    
@@ -132,7 +163,7 @@ const UploadImage: React.FC = () => {
                   <FieldLabel>Caption</FieldLabel>
                   <InputField
                     width='12.4rem'
-                    name={"package_name"}
+                    name={"caption"}
                     type={"text"}
                     label={"Name"}
                    
@@ -146,7 +177,7 @@ const UploadImage: React.FC = () => {
                   <FieldLabel>Description</FieldLabel>
                   <InputField
                     width='12.4rem'
-                    name={"package_name"}
+                    name={"description"}
                     type={"textArea"}
                     label={"Name"}
                    
@@ -160,6 +191,8 @@ const UploadImage: React.FC = () => {
                     name={"image"}
                     type={"file"}
                     label={"Name"}
+                  acceptType='image/*'
+                    onChange={handleImageUpload}
                    
                   />
 
@@ -167,7 +200,7 @@ const UploadImage: React.FC = () => {
 
                 <ButtonContainer>
 <Button onClick={(e) => {
-               
+               router.push('/gallery')
                 //  onclose()
               }}>
                     Cancel

@@ -3,7 +3,7 @@
 import { AppColors, DurationList, EventType, StatusType } from '@/lib/constant';
 import { FieldLabelProps, PackageProps } from '@/lib/types';
 import { Button, CardContainer } from '@/styles/globalStyles'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 
 import { Form } from "houseform";
@@ -11,23 +11,28 @@ import { NextPage } from 'next';
 import InputField from 'app/component/HouseFormComponent/InputField';
 import SelectField from 'app/component/HouseFormComponent/SelectField';
 import axios from 'axios';
-import { API_BASE_PATH, addPackage } from '@/lib/apiPath';
+import { API_BASE_PATH, addEvent, addPackage } from '@/lib/apiPath';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import LoadingSpinner from 'app/component/LoadingSpinner';
 import { useAuth } from '@/context/auth';
 
-interface addPackageProps { 
-    package_name?:string;
-    duration?:string;
-    prize?:number;
+interface addEventProps { 
+    title?:string;
+    location?:string;
+    event_type?:number;
+     event_date?:number;
+      status?:number;
+       description?:string; image?:any;
     onclose?:Function;
 }
 
-const AddEventForm: React.FC<addPackageProps> = ({onclose=() =>{}}) => {
+const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{}}) => {
     const router = useRouter();
-    const formValidation=(data:addPackageProps) => { 
-        if(!data.duration|| !data.prize||  !data.package_name)
+    const [base64Image, setBase64Image] = useState<string | null>(null);
+
+    const formValidation=(data:addEventProps) => { 
+        if(!data.title|| !data.location||  !data.event_type||  !data.event_date ||  !data.status ||  !data.description ||  !data.image)
         { Swal.fire({
           icon: 'warning',
             title: 'info',
@@ -39,11 +44,16 @@ const AddEventForm: React.FC<addPackageProps> = ({onclose=() =>{}}) => {
         }else return true
 
     }
-  const onFormSubmit = async(data:addPackageProps) => { 
+  const onFormSubmit = async(data:addEventProps) => { 
     if(formValidation(data)){ 
-        console.log(data);
+        const req={
+          ...data,
+          image:base64Image
+          }
+          console.log(req,data);
+          
         await axios
-          .post(API_BASE_PATH + addPackage, data, {
+          .post(API_BASE_PATH + addEvent, req, {
             headers: { "content-type": "application/x-www-form-urlencoded" },
           })
           .then(
@@ -64,7 +74,7 @@ const AddEventForm: React.FC<addPackageProps> = ({onclose=() =>{}}) => {
               } else {
                 Swal.fire({
                     icon: 'error',
-                    title: `Invalid package`,
+                    title: `Invalid Event`,
                     showConfirmButton: true,
                    
                   })
@@ -89,9 +99,25 @@ const AddEventForm: React.FC<addPackageProps> = ({onclose=() =>{}}) => {
     // Handle authentication redirection or rendering an unauthorized message
     return <LoadingSpinner></LoadingSpinner>;
   }
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result && typeof reader.result === 'string') {
+          setBase64Image(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+   
+    
+  };
+   
   return (
     <FormOuterContainer>
-      <Form<addPackageProps>
+      <Form<addEventProps>
         onSubmit={(data) => {
         onFormSubmit(data)
         }}
@@ -109,7 +135,7 @@ const AddEventForm: React.FC<addPackageProps> = ({onclose=() =>{}}) => {
                   <FieldLabel>Title</FieldLabel>
                   <InputField
                     width='12.4rem'
-                    name={"package_name"}
+                    name={"title"}
                     type={"text"}
                     label={"Name"}
                    
@@ -121,7 +147,7 @@ const AddEventForm: React.FC<addPackageProps> = ({onclose=() =>{}}) => {
                   <FieldLabel>Location</FieldLabel>
                   <InputField
                     width='12.4rem'
-                    name={"package_name"}
+                    name={"location"}
                     type={"text"}
                     label={"Name"}
                    
@@ -132,7 +158,7 @@ const AddEventForm: React.FC<addPackageProps> = ({onclose=() =>{}}) => {
                   <FieldLabel>Event Type</FieldLabel>
                   <SelectField
 
-                    name={"type"}
+                    name={"event_type"}
                     type={"select"}
                     label={"Select Event Type"}
                  
@@ -144,7 +170,7 @@ const AddEventForm: React.FC<addPackageProps> = ({onclose=() =>{}}) => {
                   <FieldLabel >Event Date</FieldLabel>
                   <InputField
                     width='12.4rem'
-                    name={"date"}
+                    name={"event_date"}
                     type={"date"}
                     label={"Name"}
                    
@@ -154,7 +180,7 @@ const AddEventForm: React.FC<addPackageProps> = ({onclose=() =>{}}) => {
                   <FieldLabel>Status</FieldLabel>
                   <SelectField
 
-                    name={"type"}
+                    name={"status"}
                     type={"select"}
                     label={"Select Status"}
                  
@@ -165,7 +191,7 @@ const AddEventForm: React.FC<addPackageProps> = ({onclose=() =>{}}) => {
                   <FieldLabel>Description</FieldLabel>
                   <InputField
                     width='12.4rem'
-                    name={"package_name"}
+                    name={"description"}
                     type={"textArea"}
                     label={"Name"}
                    
@@ -179,6 +205,8 @@ const AddEventForm: React.FC<addPackageProps> = ({onclose=() =>{}}) => {
                     name={"image"}
                     type={"file"}
                     label={"Name"}
+                    acceptType='image/*'
+                    onChange={handleImageUpload} 
                    
                   />
 

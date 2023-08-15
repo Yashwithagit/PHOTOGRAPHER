@@ -7,3 +7,6 @@ export const addPackage = "package";
 export const packageList = "packageList";
 export const userFeedback = "feedbackList";
 export const deletePack = "deletePack/";
+export const eventList = "eventList";
+export const addEvent = "addEvent";
+export const addGallery = "addGallery";

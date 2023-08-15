@@ -16,6 +16,7 @@ type Props = {
   style?: any;
   width?: string;
   rows?: number;
+  acceptType?: string;
 };
 
 const InputField: React.FC<Props> = ({
@@ -29,7 +30,8 @@ const InputField: React.FC<Props> = ({
   onChangeValidate,
   style,
   width,
-  rows
+  rows,
+  acceptType
 }) => {
   return (
     <Field<string>
@@ -61,11 +63,13 @@ const InputField: React.FC<Props> = ({
             type={type}
             width={width}
             onChange={(e: any) => {
+              
               setValue(e.target.value);
               onChange(e);
             }}
             placeholder={placeholder}
             style={style}
+            accept={acceptType}
           />}
           
 
