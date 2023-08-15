@@ -112,7 +112,7 @@ const UploadImage: React.FC = () => {
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.result && typeof reader.result === 'string') {
-          setBase64Image(reader.result);
+          setBase64Image((reader.result).substring("data:image/png;base64,".length));
         }
       };
       reader.readAsDataURL(file);
@@ -203,7 +203,7 @@ const UploadImage: React.FC = () => {
 
                 <ButtonContainer>
 <Button onClick={(e) => {
-  reset(  ) 
+  reset() 
                router.push('/gallery')
          
               }}>

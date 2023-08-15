@@ -1,7 +1,7 @@
 "use client";
 
 
-import { API_BASE_PATH, deletePack, packageList } from '@/lib/apiPath';
+import { API_BASE_PATH, deletePack, galleryList, packageList } from '@/lib/apiPath';
 import { FROM_POP_UP_TYPE, actionList } from '@/lib/constant';
 import { premiumTableHeader, tableData } from '@/lib/tableHelper'
 import { ModelDataProps } from '@/lib/types';
@@ -37,7 +37,7 @@ const [imageList,setImageList]=useState([]);
  
   const getImageList=async ()=>{
     await axios
-      .get(API_BASE_PATH + packageList, {
+      .get(API_BASE_PATH + galleryList, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
       })
       .then(

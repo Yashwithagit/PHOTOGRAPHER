@@ -1,7 +1,7 @@
 "use client";
 
 
-import { API_BASE_PATH, deletePack, packageList } from '@/lib/apiPath';
+import { API_BASE_PATH, deletePack, eventList, packageList } from '@/lib/apiPath';
 import { FROM_POP_UP_TYPE, actionList } from '@/lib/constant';
 import { eventsTableHeader, premiumTableHeader, tableData } from '@/lib/tableHelper'
 import { ModelDataProps } from '@/lib/types';
@@ -25,12 +25,12 @@ const Events: NextPage = () => {
     type: 0,
   });
 const router=useRouter();
-const [eventList,setEventList]=useState([]);
+const [eventLists,setEventList]=useState([]);
   const [pageList,setPageList]=useState([]);
   const [fixedPages,setFixedPages]=useState(0)
   const getEventList=async ()=>{
     await axios
-      .get(API_BASE_PATH + packageList, {
+      .get(API_BASE_PATH + eventList, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
       })
       .then(
@@ -67,7 +67,7 @@ const [eventList,setEventList]=useState([]);
    getEventList() 
   },[])
   const pageClick=(id:number)=>{
-    const newArray = eventList.slice(((id*10)-10));
+    const newArray = eventLists.slice(((id*10)-10));
     setPageList(newArray)
   }
   const handleFormClose=()=>{
@@ -136,6 +136,7 @@ const [eventList,setEventList]=useState([]);
       
     }
   
+console.log(fixedPages,pageList);
 
   return (
     <DashboardLayout>
@@ -146,9 +147,14 @@ const [eventList,setEventList]=useState([]);
           type: 1,
         })}>Add Event</Button></ButtonContainer>
 
-      <Table columns={eventsTableHeader(actionHandle)} data={eventList}   pageSize={10}
+     
+      <Table
+     columns={eventsTableHeader(actionHandle)}
+      data={pageList}
+      pageSize={10}
       fixedPages={fixedPages}
-      onClickPage={pageClick}/>
+      onClickPage={pageClick}
+    />
        {modelData.show && (
         <PopUp popUptype={FROM_POP_UP_TYPE}>
         <AddEventForm onclose={handleFormClose}/>

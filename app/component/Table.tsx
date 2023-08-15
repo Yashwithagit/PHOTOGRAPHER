@@ -197,6 +197,7 @@ const Table: React.FC<TableProps> = ({
 
            
           </TableBodyContainer>
+          
           {isPaginationRequired && (
               <><PaginationContainer>
                 <Pagination
@@ -234,7 +235,7 @@ export const TableContainer = styled.div<TableContainerProps>`
     props.padding ? props.padding : "2rem 1rem"};
   overflow-x: auto;
   height: ${(props) =>
-    props.tableHeight ? props.tableHeight : "88%"};
+    props.tableHeight ? props.tableHeight : "75%"};
   display: flex;
   flex-direction: column;
   justify-content:${(props) => props.spaceBetween ? "space-between" : 'none'};

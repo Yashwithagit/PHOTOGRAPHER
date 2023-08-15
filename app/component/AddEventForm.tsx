@@ -106,7 +106,7 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{}}) => {
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.result && typeof reader.result === 'string') {
-          setBase64Image(reader.result);
+          setBase64Image((reader.result).substring("data:image/png;base64,".length));
         }
       };
       reader.readAsDataURL(file);
