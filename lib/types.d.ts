@@ -117,3 +117,6 @@ export interface ModelDataProps {
 export interface TableTitleProps {
   show: string; 
 }
+export interface CardContainerProps {
+  width?: string; 
+}

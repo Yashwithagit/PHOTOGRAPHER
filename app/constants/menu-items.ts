@@ -42,11 +42,7 @@ const MENU_OPTIONS: MenuOption[] = [
     icon: MdEvent,
     url: "/events",
   },
-  {
-    name: "Registration",
-    icon: FaRegistered,
-    url: "/registration",
-  },
+  
   {
     name: "Services",
     icon: FaMoneyCheckAlt,

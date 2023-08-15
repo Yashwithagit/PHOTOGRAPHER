@@ -11,3 +11,4 @@ export const eventList = "eventList";
 export const addEvent = "addEvent";
 export const addGallery = "addGallery";
 export const galleryList = "galleryList";
+export const userSignUp = "userSignUp";

@@ -18,9 +18,8 @@ import { API_BASE_PATH, adminLogin } from "@/lib/apiPath";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-import Table from "app/component/Table";
-import { TypeList } from "@/lib/constant";
-import SelectField from "app/component/HouseFormComponent/SelectField";
+
+
 
 
 const Login = () => {

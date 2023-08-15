@@ -1,17 +1,17 @@
 "use client";
 
-import { IconsProps } from "@/lib/types";
+import { CardContainerProps, IconsProps } from "@/lib/types";
 import { AppColors } from "lib/constant";
 import styled from "styled-components";
 
-export const CardContainer = styled.div`
+export const CardContainer = styled.div<CardContainerProps>`
   position: absolute;
   top: 50%;
   left: 50%;
   z-index: 999;
   text-align: center;
   padding: 3rem;
-  width: 25rem;
+  width:  ${(props) => (props.width ? props.width : "25rem")};
   transform: translate(-50%, -50%);
   box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.75);
   display: flex;
@@ -19,11 +19,11 @@ export const CardContainer = styled.div`
   flex-direction: column;
 
   @media screen and (max-width: 768px) and (min-width: 400px) {
-    width: 20rem;
+    width: ${(props) => (props.width ? props.width : "20rem")};
     padding: 2.5rem;
   }
   @media screen and (max-width: 400px) {
-    width: 19rem;
+    width: ${(props) => (props.width ? props.width : "19rem")};
     padding: 2rem;
   }
 `;
