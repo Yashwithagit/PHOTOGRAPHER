@@ -17,7 +17,7 @@ import * as RiIcons from "react-icons/ri";
 import  { AiOutlineUser } from 'react-icons/ai'
 import  { BsLink,BsGenderAmbiguous} from 'react-icons/bs'
 import  { FaRegAddressCard} from 'react-icons/fa'
-import { API_BASE_PATH, adminLogin, userSignUp } from "@/lib/apiPath";
+import { API_BASE_PATH, addPhotographer } from "@/lib/apiPath";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
@@ -80,7 +80,7 @@ image:login?.image
     };
 
     await axios
-      .post(API_BASE_PATH + userSignUp, formData, {
+      .post(API_BASE_PATH + addPhotographer, formData, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
       })
       .then(

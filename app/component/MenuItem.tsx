@@ -39,7 +39,7 @@ console.log(url);
       confirmButtonText: 'Yes'
     }).then((result:any) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("token")
+        localStorage.removeItem("id")
         
         Swal.fire(
           
