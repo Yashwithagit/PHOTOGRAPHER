@@ -5,7 +5,7 @@ import { FieldLabelProps, PackageProps } from "@/lib/types";
 import { Button, CardContainer } from "@/styles/globalStyles";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
+import { format, parseISO } from 'date-fns';
 import { Form } from "houseform";
 import { NextPage } from "next";
 import InputField from "app/component/HouseFormComponent/InputField";
@@ -55,6 +55,7 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
   const onFormSubmit = async (data: addEventProps) => {
     if (formValidation(data)) {
        if(!eventData.event_id) {
+        
       const req = {
         ...data,
         image: base64Image,
@@ -173,6 +174,8 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
 
     reader.readAsDataURL(file);
   };
+
+  
   return (
     <FormOuterContainer>
       <Form<addEventProps>
@@ -229,7 +232,7 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
                     name={"event_date"}
                     type={"date"}
                     label={"Name"}
-                      initialValue={eventData.event_date}
+                      initialValue={format(parseISO(eventData.event_date), "yyyy-MM-dd")}
                   />
                 </FieldContainer>
                 <FieldContainer>
@@ -262,7 +265,7 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
                     label={"Name"}
                     acceptType="image/*"
                     onChange={handleImageChange}
-                    initialValue={eventData.image}
+                    // initialValue={eventData.image}
                   />
                 </FieldContainer>
 
