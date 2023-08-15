@@ -25,6 +25,7 @@ import {
 } from "react-icons/md";
 import { useAuth } from '@/context/auth';
 import LoadingSpinner from 'app/component/LoadingSpinner';
+import { convertArrayBufferToBase64 } from '@/lib/helper';
 
 const Gallery: NextPage = () => {
   const [modelData, setModelData] = useState<ModelDataProps>({
@@ -144,13 +145,18 @@ const [imageList,setImageList]=useState([]);
 
       <ButtonContainer>  <Button onClick={() => router.push('/gallery/uploadImage')}>Upload photos</Button></ButtonContainer>
  <OuterContainer>
-      <GalleryContainer> <GalleryImgContainer>
-        <GalleryImg src='/assets/bg.jpg'></GalleryImg>
-        <GalleryImgBottom>text text text
-             <div><FieldIcon onClick={() => actionHandle(1,actionList.edit)}><FcEditImage/></FieldIcon> <FieldIcon onClick={() => actionHandle(1,actionList.delete)}> <MdDeleteForever/> </FieldIcon></div> </GalleryImgBottom></GalleryImgContainer>
-       <GalleryImgContainer></GalleryImgContainer>
-        <GalleryImgContainer></GalleryImgContainer>
-         <GalleryImgContainer></GalleryImgContainer></GalleryContainer>
+      <GalleryContainer>
+         {imageList.map((item:any,index) => (
+        <GalleryImgContainer key={index}>
+        <GalleryImg src={`data:image/png;base64,${convertArrayBufferToBase64(item.image)}`} ></GalleryImg>
+        <GalleryImgBottom>{item.title}
+             <div><FieldIcon onClick={() => actionHandle(item.gallery_id,actionList.edit)}><FcEditImage/></FieldIcon> <FieldIcon onClick={() => actionHandle(item.gallery_id,actionList.delete)}> <MdDeleteForever/> </FieldIcon></div> 
+             </GalleryImgBottom></GalleryImgContainer>
+      
+      ))}
+          
+       
+       </GalleryContainer>
      </OuterContainer>
    
     </DashboardLayout>
