@@ -1,6 +1,6 @@
 "use client";
 
-import { API_BASE_PATH, deletePack, packageList } from "@/lib/apiPath";
+import { API_BASE_PATH, deletePack, packageList, service } from "@/lib/apiPath";
 import { FROM_POP_UP_TYPE } from "@/lib/constant";
 import { premiumTableHeader } from "@/lib/tableHelper";
 import { ModelDataProps } from "@/lib/types";
@@ -73,10 +73,15 @@ const Premium: NextPage = () => {
     });
   };
 
-  // delete package
-  const deletePackage = async (id: number) => {
+    // delete package
+    const postService=async (id:number)=>{
+      const data={
+        p_id:Number(localStorage.getItem('id')),
+        package_id:id,
+        status:2
+      }
     await axios
-      .get(API_BASE_PATH + deletePack + id, {
+      .post(API_BASE_PATH + service ,data, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
       })
       .then(
@@ -117,7 +122,9 @@ const Premium: NextPage = () => {
       confirmButtonText: "Yes",
     }).then((result: any) => {
       if (result.isConfirmed) {
-        deletePackage(id);
+        
+        
+        postService(id);
       }
     });
   };
