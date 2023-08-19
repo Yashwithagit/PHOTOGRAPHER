@@ -96,7 +96,7 @@ const Premium: NextPage = () => {
           } else {
             Swal.fire({
               icon: "error",
-              title: `Something went wrong`,
+              title: response.data.responseMessage,
               showConfirmButton: true,
             });
           }
