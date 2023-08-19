@@ -1,18 +1,16 @@
 "use client";
 
 
-import { API_BASE_PATH, deletePack, eventDetail, eventList, deleteEvent } from '@/lib/apiPath';
+import { API_BASE_PATH, eventDetail, eventList, deleteEvent } from '@/lib/apiPath';
 import { FROM_POP_UP_TYPE, actionList } from '@/lib/constant';
-import { eventsTableHeader, premiumTableHeader, tableData } from '@/lib/tableHelper'
+import { eventsTableHeader } from '@/lib/tableHelper'
 import { ModelDataProps } from '@/lib/types';
 import { Button, ButtonContainer } from '@/styles/globalStyles';
-import AddPackageForm from 'app/component/AddPackageForm';
 import PopUp from 'app/component/PopUp';
 import DashboardLayout from 'app/component/DashboardLayout';
 import Table from 'app/component/Table'
 import axios from 'axios';
 import { NextPage } from 'next'
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import AddEventForm from 'app/component/AddEventForm';
@@ -24,7 +22,7 @@ const Events: NextPage = () => {
     message: <></>,
     type: 0,
   });
-  const router = useRouter();
+
   const [eventLists, setEventList] = useState([]);
   const [pageList, setPageList] = useState([]);
   const [eventData, setEventData] = useState([])
@@ -66,7 +64,7 @@ const Events: NextPage = () => {
   }
   useEffect(() => {
     getEventList()
-  }, [])
+  }, [modelData.show])
   const pageClick = (id: number) => {
     const newArray = eventLists.slice(((id * 10) - 10));
     setPageList(newArray)

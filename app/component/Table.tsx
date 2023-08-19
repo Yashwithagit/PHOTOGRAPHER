@@ -29,7 +29,6 @@ import {
 import Pagination from "./Pagination";
 import NoData from "./NoData";
 
-
 interface TableProps {
   columns: Array<TableColumnProps> | any;
   data: any;
@@ -48,10 +47,9 @@ interface TableProps {
   tableContainerStyle?: string;
   display?: string;
   tableHeight?: string;
-  fixedPages?:number;
+  fixedPages?: number;
   showHeader?: string;
   header?: string;
-
 }
 
 const Table: React.FC<TableProps> = ({
@@ -70,20 +68,15 @@ const Table: React.FC<TableProps> = ({
   tableContainerStyle = "",
   tableHeight = "",
   display = "",
-  fixedPages=1,
-  showHeader='',
-  header=''
-  
-
+  fixedPages = 1,
+  showHeader = "",
+  header = "",
 }) => {
   let updatedColumns: Array<TableColumnProps> = [];
 
   updatedColumns = useMemo(() => {
-
     columns.map((column: TableColumnProps) => {
-
       return column;
-
     });
 
     return columns;
@@ -91,15 +84,13 @@ const Table: React.FC<TableProps> = ({
 
   const {
     getTableProps,
-  
+
     getTableBodyProps,
-    
+
     headerGroups,
     page = [],
     rows,
     prepareRow,
-    
-
 
     setPageSize = () => { },
     state: { pageIndex = 0 },
@@ -113,69 +104,75 @@ const Table: React.FC<TableProps> = ({
     useGlobalFilter,
     useSortBy,
     usePagination
-    
   );
 
   useEffect(() => {
     setPageSize(pageSize);
   }, []);
 
-
   const onPageClickHandle = (page: number) => {
     onClickPage(page);
   };
 
   return (
-    <TableContainer padding={tableContainerStyle} tableHeight={tableHeight} >
-       <TableHeaderTitle show={showHeader}>{header}</TableHeaderTitle>
+    <TableContainer padding={tableContainerStyle} tableHeight={tableHeight}>
+      <TableHeaderTitle show={showHeader}>{header}</TableHeaderTitle>
       {rows.length > 0 ? (
         <>
           <TableBodyContainer>
             <div className="fixTableHead">
               <TableComp {...getTableProps()}>
                 <TableHead border={border}>
-                  {headerGroups.map((headerGroup: HeaderGroup, index: number) => (
-                    <tr key={index}{...headerGroup.getHeaderGroupProps}>
-                      {headerGroup.headers.map((column, columnIndex: number) => (
-                        <TableHeader key={columnIndex} border={border} display={display}>
-                          {column.render("Header")}
-                          <SortIcon
-                            {...(column.getHeaderProps(
-                              column.getSortByToggleProps as any
-                            ) as any)}
-                          >
-                            {column.isSortRequired ? (
-                              <FontAwesomeIcon
-                                icon={
-                                  column.isSortedDesc == undefined
-                                    ? faSortAmountUp
-                                    : column.isSortedDesc
-                                      ? faSortAmountDesc
-                                      : faSortAmountUp
-                                }
-                                style={{
-                                  fontSize: "1rem",
-                                  color:
-                                    column.isSortedDesc == undefined
-                                      ? `${AppColors.LightGrey}`
-                                      : `${AppColors.Black}`,
-                                }}
-                              />
-                            ) : (
-                              ""
-                            )}
-                          </SortIcon>
-                        </TableHeader>
-                      ))}
-                    </tr>
-                  ))}
+                  {headerGroups.map(
+                    (headerGroup: HeaderGroup, index: number) => (
+                      <tr key={index} {...headerGroup.getHeaderGroupProps}>
+                        {headerGroup.headers.map(
+                          (column, columnIndex: number) => (
+                            <TableHeader
+                              key={columnIndex}
+                              border={border}
+                              display={display}
+                            >
+                              {column.render("Header")}
+                              <SortIcon
+                                {...(column.getHeaderProps(
+                                  column.getSortByToggleProps as any
+                                ) as any)}
+                              >
+                                {column.isSortRequired ? (
+                                  <FontAwesomeIcon
+                                    icon={
+                                      column.isSortedDesc == undefined
+                                        ? faSortAmountUp
+                                        : column.isSortedDesc
+                                          ? faSortAmountDesc
+                                          : faSortAmountUp
+                                    }
+                                    style={{
+                                      fontSize: "1rem",
+                                      color:
+                                        column.isSortedDesc == undefined
+                                          ? `${AppColors.LightGrey}`
+                                          : `${AppColors.Black}`,
+                                    }}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </SortIcon>
+                            </TableHeader>
+                          )
+                        )}
+                      </tr>
+                    )
+                  )}
                 </TableHead>
 
                 <tbody {...getTableBodyProps()}>
                   {page.map((row: Row, i: number) => {
                     prepareRow(row);
                     return (
-                      <TableRow   {...row.getRowProps()} padding={padding}>
+                      <TableRow {...row.getRowProps()} padding={padding}>
                         {row.cells.map((cell: any, rowIdex: number) => {
                           return (
                             <TableCell
@@ -194,25 +191,24 @@ const Table: React.FC<TableProps> = ({
                 </tbody>
               </TableComp>
             </div>
-
-           
           </TableBodyContainer>
-          
+
           {isPaginationRequired && (
-              <><PaginationContainer>
+            <>
+              <PaginationContainer>
                 <Pagination
                   onPageChange={onPageClickHandle}
                   pages={activePage}
                   total_page={Math.ceil(fixedPages / pageSize)}
-                  pageSize={pageSize} />
-              </PaginationContainer></>
-            )}
+                  pageSize={pageSize}
+                />
+              </PaginationContainer>
+            </>
+          )}
         </>
       ) : (
         <NoData />
       )}
- 
-     
     </TableContainer>
   );
 };
@@ -222,24 +218,21 @@ const TableBodyContainer = styled.div`
   overflow-x: auto;
   display: flex;
   flex-direction: column;
-`
+`;
 const TableComp = styled.table`
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0px;
 `;
 
-
 export const TableContainer = styled.div<TableContainerProps>`
-  padding: ${(props) =>
-    props.padding ? props.padding : "2rem 1rem"};
+  padding: ${(props) => (props.padding ? props.padding : "2rem 1rem")};
   overflow-x: auto;
-  height: ${(props) =>
-    props.tableHeight ? props.tableHeight : "75%"};
+  height: ${(props) => (props.tableHeight ? props.tableHeight : "75%")};
   display: flex;
   flex-direction: column;
-  justify-content:${(props) => props.spaceBetween ? "space-between" : 'none'};
-  
+  justify-content: ${(props) =>
+    props.spaceBetween ? "space-between" : "none"};
 `;
 
 const TableHead = styled.thead<TableContentProps>`
@@ -254,13 +247,11 @@ const TableHeader = styled.th<TableContentProps>`
   border: ${(props) => props.border ?? "1px solid red"};
   background: #00022e;
   display: ${(props) => (props.display ? "auto" : "auto")};
-  
 `;
 const TableCell = styled.td<TableContentProps>`
-  padding:0.5rem;
+  padding: 0.5rem;
   text-align: center;
-  border:  1px solid ${AppColors.LightGrey};
-  
+  border: 1px solid ${AppColors.LightGrey};
 `;
 const TableRow = styled.tr<TableContentProps>`
   padding: 0.5rem;
@@ -284,8 +275,6 @@ const PaginationContainer = styled.div`
 `;
 
 const TableHeaderTitle = styled.h1<TableTitleProps>`
-  text-align:left;
-  display: ${(props) => (props.show ? props.show  : "none")};;
-  
-  
+  text-align: left;
+  display: ${(props) => (props.show ? props.show : "none")};
 `;

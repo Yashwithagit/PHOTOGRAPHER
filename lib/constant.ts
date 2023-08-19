@@ -1,5 +1,3 @@
-import styled from "styled-components";
-
 export const AppColors = {
   White: "#ffff",
   Black: "#00000",
@@ -10,21 +8,12 @@ export const AppColors = {
   LightPurpleBlue: "#c8e8e9",
   LightGrey: "#D3D3D3",
   LightBrown: "#C4A484",
-  BlackOverlay : "#0000009f"
+  BlackOverlay: "#0000009f",
 };
-
-
-
-
-
-
-
-
 
 //Pop Up type
 export const FROM_POP_UP_TYPE = "form";
 export const POP_UP_TYPE = "popup";
-
 
 export const DurationList = [
   {
@@ -49,7 +38,6 @@ export const StatusType = [
     label: "Publish",
     value: 2,
   },
- 
 ];
 export const EventType = [
   {
@@ -60,27 +48,52 @@ export const EventType = [
     label: "Premier",
     value: 2,
   },
-   {
+  {
     label: "Elegant",
     value: 3,
   },
-   {
+  {
     label: "Premier",
     value: 4,
   },
-   {
+  {
     label: "Classic",
     value: 5,
   },
-   {
+  {
     label: "Delight",
     value: 6,
   },
- 
 ];
-export const actionList={
-    edit: 1,
-    delete: 2,
-     view: 3,
-     book: 4,
-  }
+export const RelatedType = [
+  {
+    label: "Wedding",
+    value: 1,
+  },
+  {
+    label: "Ceremony",
+    value: 2,
+  },
+  {
+    label: "Event",
+    value: 3,
+  },
+  {
+    label: "Nature",
+    value: 4,
+  },
+  {
+    label: "Travel",
+    value: 5,
+  },
+  {
+    label: "Cinema",
+    value: 6,
+  },
+];
+export const actionList = {
+  edit: 1,
+  delete: 2,
+  view: 3,
+  book: 4,
+};

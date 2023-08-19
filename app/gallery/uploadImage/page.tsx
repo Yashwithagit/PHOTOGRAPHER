@@ -1,17 +1,16 @@
 "use client";
 
-import { AppColors, DurationList, EventType, StatusType } from '@/lib/constant';
-import { FieldLabelProps, PackageProps } from '@/lib/types';
-import { Button, CardContainer } from '@/styles/globalStyles'
-import React, { useEffect, useState } from 'react'
+import { RelatedType } from '@/lib/constant';
+import { FieldLabelProps } from '@/lib/types';
+import { Button } from '@/styles/globalStyles'
+import React from 'react'
 import styled from 'styled-components';
 
 import { Form } from "houseform";
-import { NextPage } from 'next';
 import InputField from 'app/component/HouseFormComponent/InputField';
 import SelectField from 'app/component/HouseFormComponent/SelectField';
 import axios from 'axios';
-import { API_BASE_PATH, addGallery, addPackage } from '@/lib/apiPath';
+import { API_BASE_PATH, addGallery } from '@/lib/apiPath';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import LoadingSpinner from 'app/component/LoadingSpinner';
@@ -29,7 +28,6 @@ interface uploadImageProps {
 }
 
 const UploadImage: React.FC = () => {
-  const [base64Image, setBase64Image] = useState<string | null>(null);
   const router = useRouter();
   const formValidation = (data: uploadImageProps) => {
 
@@ -40,7 +38,7 @@ const UploadImage: React.FC = () => {
         text: 'Please Enter Mandatory Fields...',
 
       })
-      console.log(data);
+
       return false
 
     } else return true
@@ -110,26 +108,7 @@ const UploadImage: React.FC = () => {
     return <LoadingSpinner></LoadingSpinner>;
   }
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-      convertToBase64(file);
-    }
-  };
-  const convertToBase64 = (file: File) => {
-    const reader = new FileReader();
 
-    reader.onload = (event: ProgressEvent<FileReader>) => {
-      if (event.target) {
-        const base64String = event.target.result as string;
-        const base64Image = base64String.split(",")[1];
-        console.log(base64Image);
-        setBase64Image(base64Image);
-      }
-    };
-
-    reader.readAsDataURL(file);
-  };
 
   return (
     <DashboardLayout>
@@ -141,90 +120,83 @@ const UploadImage: React.FC = () => {
         >
           {({ isValid, submit, reset, value: formValue }) => {
             return (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  submit();
-                }}
-              >
-                <>
-                  <FieldContainer>
 
-                    <FieldLabel>Related</FieldLabel>
-                    <SelectField
+              <div>
+                <FieldContainer>
 
-                      name={"type"}
-                      type={"select"}
-                      label={"Select Type"}
+                  <FieldLabel>Related</FieldLabel>
+                  <SelectField
 
-                      options={EventType}
-                    />
-                  </FieldContainer>
-                  <FieldContainer>
-                    <FieldLabel>Title</FieldLabel>
-                    <InputField
-                      width='12.4rem'
-                      name={"title"}
-                      type={"text"}
-                      label={"Name"}
+                    name={"type"}
+                    type={"select"}
+                    label={"Select Type"}
 
-                      placeholder="Enter Title"
-                    />
-                  </FieldContainer>
+                    options={RelatedType}
+                  />
+                </FieldContainer>
+                <FieldContainer>
+                  <FieldLabel>Title</FieldLabel>
+                  <InputField
+                    width='12.4rem'
+                    name={"title"}
+                    type={"text"}
+                    label={"Name"}
 
-                  <FieldContainer>
-                    <FieldLabel>Caption</FieldLabel>
-                    <InputField
-                      width='12.4rem'
-                      name={"caption"}
-                      type={"text"}
-                      label={"Name"}
+                    placeholder="Enter Title"
+                  />
+                </FieldContainer>
 
-                      placeholder="Enter caption"
-                    />
-                  </FieldContainer>
+                <FieldContainer>
+                  <FieldLabel>Caption</FieldLabel>
+                  <InputField
+                    width='12.4rem'
+                    name={"caption"}
+                    type={"text"}
+                    label={"Name"}
+
+                    placeholder="Enter caption"
+                  />
+                </FieldContainer>
 
 
 
-                  <FieldContainer>
-                    <FieldLabel>Description</FieldLabel>
-                    <InputField
-                      width='12.4rem'
-                      name={"description"}
-                      type={"textArea"}
-                      label={"Name"}
+                <FieldContainer>
+                  <FieldLabel>Description</FieldLabel>
+                  <InputField
+                    width='12.4rem'
+                    name={"description"}
+                    type={"textArea"}
+                    label={"Name"}
 
-                      placeholder="Enter a description"
-                    />
-                  </FieldContainer>
-                  <FieldContainer>
-                    <FieldLabel>Select Image</FieldLabel>
-                    <InputField
-                      width='12.4rem'
-                      name={"image"}
-                      type={"file"}
-                      label={"Name"}
-                      acceptType='image/*'
-                    // onChange={handleImageChange}
+                    placeholder="Enter a description"
+                  />
+                </FieldContainer>
+                <FieldContainer>
+                  <FieldLabel>Select Image</FieldLabel>
+                  <InputField
+                    width='12.4rem'
+                    name={"image"}
+                    type={"file"}
+                    label={"Name"}
+                    acceptType='image/*'
 
-                    />
+                  />
 
-                  </FieldContainer>
+                </FieldContainer>
 
-                  <ButtonContainer>
-                    <Button onClick={(e) => {
-                      reset()
-                      router.push('/gallery')
+                <ButtonContainer>
+                  <Button type='button' onClick={(e) => {
+                    router.push('/gallery')
 
-                    }}>
-                      Cancel
-                    </Button>
-                    <Button onClick={submit}>
-                      Submit
-                    </Button>
-                  </ButtonContainer>
-                </>
-              </form>
+                  }}>
+                    Cancel
+                  </Button>
+                  <Button onClick={submit}>
+                    Submit
+                  </Button>
+                </ButtonContainer>
+              </div>
+
             );
           }}
         </Form>
@@ -249,6 +221,7 @@ const FormOuterContainer = styled.div`
   padding: 2rem;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
 const FieldContainer = styled.div`

@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { z } from "zod";
 
-
 type Props = {
   name: string;
   type: string;
@@ -31,7 +30,7 @@ const InputField: React.FC<Props> = ({
   style,
   width,
   rows,
-  acceptType
+  acceptType,
 }) => {
   return (
     <Field<string>
@@ -43,39 +42,35 @@ const InputField: React.FC<Props> = ({
         <>
           {value && setValue(value)}
 
-          {type === 'textArea' ? <TextArea
-            value={value}
-            defaultValue={initialValue}
-            name={name}
-            // type={type}
-
-            rows={rows}
-            onChange={(e: any) => {
-              setValue(e.target.value);
-              onChange(e);
-            }}
-            placeholder={placeholder}
-            style={style}
-          /> : <Input
-            value={value}
-            defaultValue={initialValue}
-            name={name}
-            type={type}
-            width={width}
-            onChange={(e: any) => {
-
-              setValue(type === 'file' ? e.target.files[0] : e.target.value);
-              onChange(e);
-            }}
-            placeholder={placeholder}
-            style={style}
-            accept={acceptType}
-          />}
-
-
-          {/* {errors.map((error) => (
-            <p key={error}>{error}</p>
-          ))} */}
+          {type === "textArea" ? (
+            <TextArea
+              value={value}
+              defaultValue={initialValue}
+              name={name}
+              rows={rows}
+              onChange={(e: any) => {
+                setValue(e.target.value);
+                onChange(e);
+              }}
+              placeholder={placeholder}
+              style={style}
+            />
+          ) : (
+            <Input
+              value={value}
+              defaultValue={initialValue}
+              name={name}
+              type={type}
+              width={width}
+              onChange={(e: any) => {
+                setValue(type === "file" ? e.target.files[0] : e.target.value);
+                onChange(e);
+              }}
+              placeholder={placeholder}
+              style={style}
+              accept={acceptType}
+            />
+          )}
         </>
       )}
     </Field>
@@ -86,7 +81,7 @@ export default InputField;
 const Input = styled.input<Props>`
   padding: 0.7rem 0.8rem;
   border-radius: 0.5rem;
-  width:${(props) => props.width ? props.width : 'auto'};
+  width: ${(props) => (props.width ? props.width : "auto")};
   text-align: left;
   height: auto;
   border: 1px solid #999999;
@@ -102,7 +97,7 @@ const Input = styled.input<Props>`
 const TextArea = styled.textarea`
   padding: 0.7rem 0.8rem;
   border-radius: 0.5rem;
-  width:20rem;
+  width: 20rem;
   text-align: left;
   height: auto;
   border: 1px solid #999999;

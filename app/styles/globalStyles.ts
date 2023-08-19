@@ -11,7 +11,7 @@ export const CardContainer = styled.div<CardContainerProps>`
   z-index: 999;
   text-align: center;
   padding: 3rem;
-  width:  ${(props) => (props.width ? props.width : "25rem")};
+  width: ${(props) => (props.width ? props.width : "25rem")};
   transform: translate(-50%, -50%);
   box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.75);
   display: flex;
@@ -79,7 +79,7 @@ export const SubmitButton = styled.button`
 export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  
+
   gap: 1rem;
 `;
 
@@ -111,40 +111,6 @@ export const PageTitle = styled.h1`
   padding: 0;
 `;
 
-export const BackArrowContainer = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  display: flex;
-  padding-top: 2rem;
-  padding-left: 5rem;
-  @media screen and (max-width: 768px) {
-    padding-left: 3rem;
-  }
-`;
-
-export const SwiperContainer = styled.div`
-  max-width: 124rem;
-  padding: 4rem;
-  margin: 0 auto;
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
-`;
-
-export const SwiperMobileContainer = styled.main`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  display: none;
-  padding-bottom: 3rem;
-  @media screen and (max-width: 768px) {
-    display: block;
-  }
-`;
-
 export const Button = styled.button`
   outline: none;
   padding: 0.7rem 3rem;
@@ -163,11 +129,12 @@ export const Button = styled.button`
   white-space: nowrap;
 `;
 
-export const ButtonContainer=styled.div`
-display:flex;
-justify-content:flex-end;`
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
 export const FieldIcon = styled.span<IconsProps>`
-font-size: ${(props) => (props.width ? props.width : "1.5rem")};
-line-height: 1rem;
-cursor: pointer;
+  font-size: ${(props) => (props.width ? props.width : "1.5rem")};
+  line-height: 1rem;
+  cursor: pointer;
 `;

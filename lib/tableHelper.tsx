@@ -134,51 +134,7 @@ export const eventsTableHeader = (actionHandle: Function) => {
     },
   ];
 };
-export const photographerTableHeader = [
-  {
-    Header: "Name",
-    accessor: "photographer_name",
-  },
-  {
-    Header: "Company",
-    accessor: "company",
-  },
-  {
-    Header: "Contact",
-    accessor: "contact",
-  },
-  {
-    Header: "Details",
-    accessor: "details",
-  },
-  {
-    Header: "Action",
-    accessor: "action",
-    Cell: ({
-      row,
-    }: {
-      row: {
-        getToggleRowSelectedProps: any;
-        original: {
-          photographer_id: number;
-          user_name: string;
-        };
-      };
-    }) => {
-      return (
-        <TableDiv>
-          <FieldIcon>
-            <GrIcons.GrView />
-          </FieldIcon>
 
-          <FieldIcon>
-            <MdIcons.MdDelete />
-          </FieldIcon>
-        </TableDiv>
-      );
-    },
-  },
-];
 export const userManagementTableHeader = [
   {
     Header: "User id",
@@ -247,74 +203,9 @@ export const userManagementData = [
   },
 ];
 
-export const tableData = [
-  {
-    package_id: "23456789-2345-2",
-    package_title: "Gold",
-    prize: 1200,
-    duration: "1 month",
-    created_at: "12/2/23",
-  },
-  {
-    package_id: "23456789-2345-2",
-    package_title: "Gold",
-    prize: 1200,
-    duration: "1 month",
-    created_at: "12/2/23",
-  },
-  {
-    package_id: "23456789-2345-2",
-    package_title: "Gold",
-    prize: 1200,
-    duration: "1 month",
-    created_at: "12/2/23",
-  },
-  {
-    package_id: "23456789-2345-2",
-    package_title: "Gold",
-    prize: 1200,
-    duration: "1 month",
-    created_at: "12/2/23",
-  },
-  {
-    package_id: "23456789-2345-2",
-    package_title: "Gold",
-    prize: 1200,
-    duration: "1 month",
-    created_at: "12/2/23",
-  },
-  {
-    package_id: "23456789-2345-2",
-    package_title: "Gold",
-    prize: 1200,
-    duration: "1 month",
-    created_at: "12/2/23",
-  },
-  {
-    package_id: "23456789-2345-2",
-    package_title: "Gold",
-    prize: 1200,
-    duration: "1 month",
-    created_at: "12/2/23",
-  },
-];
 
-export const photographerManagementData = [
-  {
-    photographer_id: "123456789-",
-    photographer_name: "<NAME>",
-    company: "<EMAIL>",
-    contact: "987654321",
-    details: "Bangalore",
-  },
-  {
-    photographer_id: "123456789-",
-    photographer_name: "<NAME>",
-    company: "<EMAIL>",
-    contact: "987654321",
-    details: "Bangalore",
-  },
-];
+
+
 export const feedBackTableHeader = [
   {
     Header: "S.NO.",
@@ -352,13 +243,7 @@ export const feedBackTableHeader = [
     },
   },
 ];
-export const feedBackData = [
-  {
-    feedback_id: 1,
-    feedback: "asa",
-    user_id: 1,
-  },
-];
+
 const TableDiv = styled.main`
   display: flex;
   gap: 1rem;

@@ -18,7 +18,7 @@ const SelectField: React.FC<Props> = ({
   type,
   label,
   placeholder,
-  onChange=() => { },
+  onChange = () => { },
   options,
   initialValue
 }) => {
@@ -60,5 +60,4 @@ const Select = styled.select`
   outline: none;
   border: 1px solid #999999;
   margin-left: 0.5rem;
-  /* width: 14rem; */
 `;

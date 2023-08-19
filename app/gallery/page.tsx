@@ -1,31 +1,23 @@
 "use client";
 
+import { API_BASE_PATH, deleteGallery, galleryList } from "@/lib/apiPath";
+import { actionList } from "@/lib/constant";
+import { ModelDataProps } from "@/lib/types";
+import { Button, ButtonContainer, FieldIcon } from "@/styles/globalStyles";
+import DashboardLayout from "app/component/DashboardLayout";
 
-import { API_BASE_PATH, deleteGallery, deletePack, galleryList, packageList } from '@/lib/apiPath';
-import { FROM_POP_UP_TYPE, actionList } from '@/lib/constant';
-import { premiumTableHeader, tableData } from '@/lib/tableHelper'
-import { ModelDataProps } from '@/lib/types';
-import { Button, ButtonContainer, FieldIcon } from '@/styles/globalStyles';
-import AddPackageForm from 'app/component/AddPackageForm';
-import PopUp from 'app/component/PopUp';
-import DashboardLayout from 'app/component/DashboardLayout';
-import Table from 'app/component/Table'
-import axios from 'axios';
-import { NextPage } from 'next'
-import { useRouter } from 'next/navigation';
-import { Router } from 'next/router';
-import React, { useEffect, useState } from 'react'
-import Swal from 'sweetalert2';
-import { styled } from 'styled-components';
-import {
-  FcEditImage
-} from "react-icons/fc";
-import {
-  MdDeleteForever
-} from "react-icons/md";
-import { useAuth } from '@/context/auth';
-import LoadingSpinner from 'app/component/LoadingSpinner';
-import { convertArrayBufferToBase64 } from '@/lib/helper';
+import axios from "axios";
+import { NextPage } from "next";
+import { useRouter } from "next/navigation";
+
+import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { styled } from "styled-components";
+import { FcEditImage } from "react-icons/fc";
+import { MdDeleteForever } from "react-icons/md";
+import { useAuth } from "@/context/auth";
+import LoadingSpinner from "app/component/LoadingSpinner";
+import { convertArrayBufferToBase64 } from "@/lib/helper";
 
 const Gallery: NextPage = () => {
   const [modelData, setModelData] = useState<ModelDataProps>({
@@ -44,35 +36,33 @@ const Gallery: NextPage = () => {
       .then(
         (response) => {
           if (response.data.responseCode === 100001) {
-            const newData = response?.data?.responseData?.map((item: any, index: number) => {
-              item['index'] = index + 1
-              return item
-            })
-            setImageList(newData)
-
+            const newData = response?.data?.responseData?.map(
+              (item: any, index: number) => {
+                item["index"] = index + 1;
+                return item;
+              }
+            );
+            setImageList(newData);
           } else {
             Swal.fire({
-              icon: 'error',
+              icon: "error",
               title: `Something went wrong`,
               showConfirmButton: true,
-
-            })
+            });
           }
         },
         (error) => {
           Swal.fire({
-            icon: 'error',
+            icon: "error",
             title: `${error}`,
             showConfirmButton: true,
-
-          })
+          });
         }
       );
-  }
+  };
   useEffect(() => {
-    getImageList()
-  }, [])
-
+    getImageList();
+  }, []);
 
   // delete package
   const deleteGalleryImage = async (id: number) => {
@@ -84,55 +74,48 @@ const Gallery: NextPage = () => {
         (response) => {
           if (response.data.responseCode === 100001) {
             Swal.fire({
-              icon: 'success',
+              icon: "success",
               title: `Image has been Deleted from Gallery`,
               showConfirmButton: true,
-
-            })
-            getImageList()
-
+            });
+            getImageList();
           } else {
             Swal.fire({
-              icon: 'error',
+              icon: "error",
               title: `Something went wrong`,
               showConfirmButton: true,
-
-            })
+            });
           }
         },
         (error) => {
           Swal.fire({
-            icon: 'error',
+            icon: "error",
             title: `${error}`,
             showConfirmButton: true,
-
-          })
+          });
         }
       );
-  }
+  };
   // handle action
   const actionHandle = (id: number, action: number) => {
     if (action === actionList.delete) {
       Swal.fire({
-        title: 'Are you sure?',
+        title: "Are you sure?",
         text: "You want to Delete a Image.",
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes'
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
       }).then((result: any) => {
         if (result.isConfirmed) {
-
-
           deleteGalleryImage(id);
         }
-      })
+      });
     } else {
-      router.push(`/gallery/uploadImage?id=${id}`)
+      router.push(`/gallery/uploadImage?id=${id}`);
     }
-
-  }
+  };
 
   const isAuthenticated = useAuth();
   console.log(imageList.map((item: any, index) => item.image));
@@ -143,75 +126,88 @@ const Gallery: NextPage = () => {
   }
   return (
     <DashboardLayout>
-
-      <ButtonContainer>  <Button onClick={() => router.push('/gallery/uploadImage')}>Upload photos</Button></ButtonContainer>
+      <ButtonContainer>
+        {" "}
+        <Button onClick={() => router.push("/gallery/uploadImage")}>
+          Upload photos
+        </Button>
+      </ButtonContainer>
       <OuterContainer>
         <GalleryContainer>
-          {imageList.length !== 0 && imageList.map((item: any, index) => (
-
-            <GalleryImgContainer key={index}>
-              <GalleryImg src={`data:image/png;base64,${convertArrayBufferToBase64(item.image)}`} ></GalleryImg>
-              <GalleryImgBottom>{item.title}
-                <div><FieldIcon onClick={() => actionHandle(item.gallery_id, actionList.edit)}><FcEditImage /></FieldIcon> <FieldIcon onClick={() => actionHandle(item.gallery_id, actionList.delete)}> <MdDeleteForever /> </FieldIcon></div>
-              </GalleryImgBottom></GalleryImgContainer>
-
-          ))}
-
-
+          {imageList.length !== 0 &&
+            imageList.map((item: any, index) => (
+              <GalleryImgContainer key={index}>
+                <GalleryImg src={item?.image}></GalleryImg>
+                <GalleryImgBottom>
+                  {item.title}
+                  <div>
+                    <FieldIcon
+                      onClick={() =>
+                        actionHandle(item.gallery_id, actionList.edit)
+                      }
+                    >
+                      <FcEditImage />
+                    </FieldIcon>{" "}
+                    <FieldIcon
+                      onClick={() =>
+                        actionHandle(item.gallery_id, actionList.delete)
+                      }
+                    >
+                      {" "}
+                      <MdDeleteForever />{" "}
+                    </FieldIcon>
+                  </div>
+                </GalleryImgBottom>
+              </GalleryImgContainer>
+            ))}
         </GalleryContainer>
       </OuterContainer>
-
     </DashboardLayout>
+  );
+};
 
-  )
-}
-
-export default React.memo(Gallery)
+export default React.memo(Gallery);
 const GalleryContainer = styled.div`
- display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    overflow:scroll;
-     height: 100%;
-    grid-gap: 2rem;
-    justify-items: center;
-    align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  overflow: scroll;
+  height: 100%;
+  grid-gap: 2rem;
+  justify-items: center;
+  align-items: center;
 `;
 const OuterContainer = styled.div`
- margin: 1rem;
-    overflow-y:auto;
-     height: 35rem;
-  
+  margin: 1rem;
+  overflow-y: auto;
+  height: 35rem;
 `;
-
 
 const GalleryImg = styled.img`
- display: grid;
+  display: grid;
   width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 1.5rem;
-    
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1.5rem;
 `;
 const GalleryImgContainer = styled.figure`
- background-color: blue;
+  background-color: blue;
   width: 18rem;
-    height: 18rem;
-     box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.4);
-border-radius: 1.5rem;
- position: relative;
+  height: 18rem;
+  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.4);
+  border-radius: 1.5rem;
+  position: relative;
 `;
 const GalleryImgBottom = styled.figcaption`
- background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.4);
   position: absolute;
-   bottom: 0rem;
-   align-items: center;
-    justify-content: space-between;
-   padding: 0rem 1rem;
-   display: flex;
-   width: 100%;
-   height: 3rem;
-   border-radius: 0rem 0rem 1.5rem 1.5rem;
-   font-size: 1.5rem;
-   
+  bottom: 0rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0rem 1rem;
+  display: flex;
+  width: 100%;
+  height: 3rem;
+  border-radius: 0rem 0rem 1.5rem 1.5rem;
+  font-size: 1.5rem;
 `;
