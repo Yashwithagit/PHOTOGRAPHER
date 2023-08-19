@@ -52,9 +52,9 @@ export const premiumTableHeader = (actionHandle: Function) => {
               }
             >
               <BsIcons.BsFillBookmarkPlusFill
- />
+              />
             </FieldIcon>
-           
+
           </TableDiv>
         );
       },
@@ -87,7 +87,7 @@ export const eventsTableHeader = (actionHandle: Function) => {
       Header: "Created At",
       accessor: "created_at",
     },
-     {
+    {
       Header: "Published",
       accessor: "updated_at",
     },
@@ -107,7 +107,7 @@ export const eventsTableHeader = (actionHandle: Function) => {
       }) => {
         return (
           <TableDiv>
-             <FieldIcon
+            <FieldIcon
               onClick={() =>
                 actionHandle(row.original.event_id, actionList.view)
               }
@@ -337,7 +337,7 @@ export const feedBackTableHeader = [
       row: {
         getToggleRowSelectedProps: any;
         original: {
-         
+
           email: string;
         };
       };

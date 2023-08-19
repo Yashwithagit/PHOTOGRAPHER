@@ -1,7 +1,7 @@
 "use client";
 
 
-import { API_BASE_PATH, deletePack, galleryList, packageList } from '@/lib/apiPath';
+import { API_BASE_PATH, deleteGallery, deletePack, galleryList, packageList } from '@/lib/apiPath';
 import { FROM_POP_UP_TYPE, actionList } from '@/lib/constant';
 import { premiumTableHeader, tableData } from '@/lib/tableHelper'
 import { ModelDataProps } from '@/lib/types';
@@ -33,10 +33,10 @@ const Gallery: NextPage = () => {
     message: <></>,
     type: 0,
   });
-const router=useRouter();
-const [imageList,setImageList]=useState([]);
- 
-  const getImageList=async ()=>{
+  const router = useRouter();
+  const [imageList, setImageList] = useState([]);
+
+  const getImageList = async () => {
     await axios
       .get(API_BASE_PATH + galleryList, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -44,18 +44,18 @@ const [imageList,setImageList]=useState([]);
       .then(
         (response) => {
           if (response.data.responseCode === 100001) {
-            const newData=response?.data?.responseData?.map((item:any,index:number)=>{
-                item['index']=index+1
-                return item
+            const newData = response?.data?.responseData?.map((item: any, index: number) => {
+              item['index'] = index + 1
+              return item
             })
-           setImageList(newData)
-          
+            setImageList(newData)
+
           } else {
             Swal.fire({
               icon: 'error',
               title: `Something went wrong`,
               showConfirmButton: true,
-             
+
             })
           }
         },
@@ -64,20 +64,20 @@ const [imageList,setImageList]=useState([]);
             icon: 'error',
             title: `${error}`,
             showConfirmButton: true,
-           
+
           })
         }
       );
   }
-  useEffect(()=>{
-   getImageList() 
-  },[])
- 
+  useEffect(() => {
+    getImageList()
+  }, [])
 
-    // delete package
-    const deletePackage=async (id:number)=>{
+
+  // delete package
+  const deleteGalleryImage = async (id: number) => {
     await axios
-      .get(API_BASE_PATH + deletePack + id, {
+      .get(API_BASE_PATH + deleteGallery + id, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
       })
       .then(
@@ -87,16 +87,16 @@ const [imageList,setImageList]=useState([]);
               icon: 'success',
               title: `Image has been Deleted from Gallery`,
               showConfirmButton: true,
-             
+
             })
-             getImageList() 
+            getImageList()
 
           } else {
             Swal.fire({
               icon: 'error',
               title: `Something went wrong`,
               showConfirmButton: true,
-             
+
             })
           }
         },
@@ -105,37 +105,37 @@ const [imageList,setImageList]=useState([]);
             icon: 'error',
             title: `${error}`,
             showConfirmButton: true,
-           
+
           })
         }
       );
   }
-    // handle action
-    const actionHandle=(id:number,action:number)=>{
-       if(action===actionList.delete){
-          Swal.fire({
-      title: 'Are you sure?',
-      text: "You want to Delete a Image.",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes'
-    }).then((result:any) => {
-      if (result.isConfirmed) {
-        
-        
-        deletePackage(id);
-      }
-    })
-     }else {
+  // handle action
+  const actionHandle = (id: number, action: number) => {
+    if (action === actionList.delete) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You want to Delete a Image.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+      }).then((result: any) => {
+        if (result.isConfirmed) {
+
+
+          deleteGalleryImage(id);
+        }
+      })
+    } else {
       router.push(`/gallery/uploadImage?id=${id}`)
-       }
-      
     }
-  
- const isAuthenticated = useAuth();
-console.log(imageList.map((item:any,index) => item.image));
+
+  }
+
+  const isAuthenticated = useAuth();
+  console.log(imageList.map((item: any, index) => item.image));
 
   if (!isAuthenticated) {
     // Handle authentication redirection or rendering an unauthorized message
@@ -145,24 +145,24 @@ console.log(imageList.map((item:any,index) => item.image));
     <DashboardLayout>
 
       <ButtonContainer>  <Button onClick={() => router.push('/gallery/uploadImage')}>Upload photos</Button></ButtonContainer>
- <OuterContainer>
-      <GalleryContainer>
-         {imageList.length!==0&&imageList.map((item:any,index) => (
-         
-        <GalleryImgContainer key={index}>
-        <GalleryImg src={`data:image/png;base64,${convertArrayBufferToBase64(item.image)}`} ></GalleryImg>
-        <GalleryImgBottom>{item.title}
-             <div><FieldIcon onClick={() => actionHandle(item.gallery_id,actionList.edit)}><FcEditImage/></FieldIcon> <FieldIcon onClick={() => actionHandle(item.gallery_id,actionList.delete)}> <MdDeleteForever/> </FieldIcon></div> 
-             </GalleryImgBottom></GalleryImgContainer>
-      
-      ))}
-          
-       
-       </GalleryContainer>
-     </OuterContainer>
-   
+      <OuterContainer>
+        <GalleryContainer>
+          {imageList.length !== 0 && imageList.map((item: any, index) => (
+
+            <GalleryImgContainer key={index}>
+              <GalleryImg src={`data:image/png;base64,${convertArrayBufferToBase64(item.image)}`} ></GalleryImg>
+              <GalleryImgBottom>{item.title}
+                <div><FieldIcon onClick={() => actionHandle(item.gallery_id, actionList.edit)}><FcEditImage /></FieldIcon> <FieldIcon onClick={() => actionHandle(item.gallery_id, actionList.delete)}> <MdDeleteForever /> </FieldIcon></div>
+              </GalleryImgBottom></GalleryImgContainer>
+
+          ))}
+
+
+        </GalleryContainer>
+      </OuterContainer>
+
     </DashboardLayout>
-     
+
   )
 }
 

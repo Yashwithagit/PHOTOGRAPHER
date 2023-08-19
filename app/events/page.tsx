@@ -1,7 +1,7 @@
 "use client";
 
 
-import { API_BASE_PATH, deletePack, eventDetail, eventList, packageList } from '@/lib/apiPath';
+import { API_BASE_PATH, deletePack, eventDetail, eventList, deleteEvent } from '@/lib/apiPath';
 import { FROM_POP_UP_TYPE, actionList } from '@/lib/constant';
 import { eventsTableHeader, premiumTableHeader, tableData } from '@/lib/tableHelper'
 import { ModelDataProps } from '@/lib/types';
@@ -24,12 +24,12 @@ const Events: NextPage = () => {
     message: <></>,
     type: 0,
   });
-const router=useRouter();
-const [eventLists,setEventList]=useState([]);
-  const [pageList,setPageList]=useState([]);
-    const [eventData,setEventData]=useState([])
-  const [fixedPages,setFixedPages]=useState(0)
-  const getEventList=async ()=>{
+  const router = useRouter();
+  const [eventLists, setEventList] = useState([]);
+  const [pageList, setPageList] = useState([]);
+  const [eventData, setEventData] = useState([])
+  const [fixedPages, setFixedPages] = useState(0)
+  const getEventList = async () => {
     await axios
       .get(API_BASE_PATH + eventList, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -37,20 +37,20 @@ const [eventLists,setEventList]=useState([]);
       .then(
         (response) => {
           if (response.data.responseCode === 100001) {
-            const newData=response?.data?.responseData?.map((item:any,index:number)=>{
-                item['index']=index+1
-                return item
+            const newData = response?.data?.responseData?.map((item: any, index: number) => {
+              item['index'] = index + 1
+              return item
             })
-           setEventList(newData)
-           setPageList(newData)
-           setFixedPages(newData.length)
+            setEventList(newData)
+            setPageList(newData)
+            setFixedPages(newData.length)
 
           } else {
             Swal.fire({
               icon: 'error',
               title: `Something went wrong`,
               showConfirmButton: true,
-             
+
             })
           }
         },
@@ -59,27 +59,29 @@ const [eventLists,setEventList]=useState([]);
             icon: 'error',
             title: `${error}`,
             showConfirmButton: true,
-           
+
           })
         }
       );
   }
-  useEffect(()=>{
-   getEventList() 
-  },[])
-  const pageClick=(id:number)=>{
-    const newArray = eventLists.slice(((id*10)-10));
+  useEffect(() => {
+    getEventList()
+  }, [])
+  const pageClick = (id: number) => {
+    const newArray = eventLists.slice(((id * 10) - 10));
     setPageList(newArray)
   }
-  const handleFormClose=()=>{
+  const handleFormClose = () => {
     setModelData({
       ...modelData,
       show: false,
       type: 0,
-    })}
+    })
+  }
 
-    // delete package
-    const deleteEvent=async (id:number)=>{
+  // delete package
+  const deleteEvents = async (id: number) => {
+    console.log(id)
     await axios
       .get(API_BASE_PATH + deleteEvent + id, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -91,16 +93,16 @@ const [eventLists,setEventList]=useState([]);
               icon: 'success',
               title: `success`,
               showConfirmButton: true,
-             
+
             })
-             getEventList() 
+            getEventList()
 
           } else {
             Swal.fire({
               icon: 'error',
               title: `Something went wrong`,
               showConfirmButton: true,
-             
+
             })
           }
         },
@@ -109,13 +111,13 @@ const [eventLists,setEventList]=useState([]);
             icon: 'error',
             title: `${error}`,
             showConfirmButton: true,
-           
+
           })
         }
       );
   }
   // event detail
-   const detailsEvent = async (id: number) => {
+  const detailsEvent = async (id: number) => {
     await axios
       .get(API_BASE_PATH + eventDetail + id, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -123,9 +125,9 @@ const [eventLists,setEventList]=useState([]);
       .then(
         (response) => {
           if (response.data.responseCode === 100001) {
-           setEventData(response.data.responseData)
-           setModelData({...modelData,type:id,show:true})
-           
+            setEventData(response.data.responseData)
+            setModelData({ ...modelData, type: id, show: true })
+
           } else {
             Swal.fire({
               icon: "error",
@@ -143,57 +145,57 @@ const [eventLists,setEventList]=useState([]);
         }
       );
   };
-    // handle action
-    const actionHandle=(id:number,action:number)=>{
-      if(actionList.delete===action){ 
-          Swal.fire({
-      title: 'Are you sure?',
-      text: "You want to Delete.",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes'
-    }).then((result:any) => {
-      if (result.isConfirmed) {
-        
-        
-        deleteEvent(id);
-      }
-    })
-      }else{
-     detailsEvent(id)
-      }
-      
+  // handle action
+  const actionHandle = (id: number, action: number) => {
+    if (actionList.delete === action) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You want to Delete.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+      }).then((result: any) => {
+        if (result.isConfirmed) {
+
+
+          deleteEvents(id);
+        }
+      })
+    } else {
+      detailsEvent(id)
     }
-  
-console.log(fixedPages,pageList);
+
+  }
+
+  console.log(fixedPages, pageList);
 
   return (
     <DashboardLayout>
 
       <ButtonContainer>  <Button onClick={() => setModelData({
-          ...modelData,
-          show: true,
-          type: 1,
-        })}>Add Event</Button></ButtonContainer>
+        ...modelData,
+        show: true,
+        type: 1,
+      })}>Add Event</Button></ButtonContainer>
 
-     
+
       <Table
-     columns={eventsTableHeader(actionHandle)}
-      data={pageList}
-      pageSize={10}
-      fixedPages={fixedPages}
-      onClickPage={pageClick}
-    />
-       {modelData.show && (
+        columns={eventsTableHeader(actionHandle)}
+        data={pageList}
+        pageSize={10}
+        fixedPages={fixedPages}
+        onClickPage={pageClick}
+      />
+      {modelData.show && (
         <PopUp popUptype={FROM_POP_UP_TYPE}>
-        <AddEventForm onclose={handleFormClose} data={eventData}/>
+          <AddEventForm onclose={handleFormClose} data={eventData} />
         </PopUp>
       )}
-   
+
     </DashboardLayout>
-     
+
   )
 }
 

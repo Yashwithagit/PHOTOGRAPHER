@@ -26,12 +26,12 @@ interface addEventProps {
   description?: string;
   image?: any;
   onclose?: Function;
-   data?:any
+  data?: any
 }
 
-const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
+const AddEventForm: React.FC<addEventProps> = ({ onclose = () => { }, data }) => {
   const router = useRouter();
-   const[eventData,setEventData]=useState<any>(data?data:{})
+  const [eventData, setEventData] = useState<any>(data ? data : {})
   const [base64Image, setBase64Image] = useState<string | null>(null);
 
   const formValidation = (data: addEventProps) => {
@@ -54,50 +54,51 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
   };
   const onFormSubmit = async (data: addEventProps) => {
     if (formValidation(data)) {
-       if(!eventData.event_id) {
-        
-      const req = {
-        ...data,
-        image: base64Image,
-      };
-      console.log(req, data);
+      if (!eventData.event_id) {
 
-      await axios
-        .post(API_BASE_PATH + addEvent, req, {
-          headers: { "content-type": "application/x-www-form-urlencoded" },
-        })
-        .then(
-          (response) => {
-            if (response.data.responseCode === 100001) {
-              Swal.fire({
-                icon: "success",
-                title: "success",
-                showConfirmButton: false,
-                timer: 1000,
-              }).then((result) => {
-                if (result.isDismissed) {
-                  onclose();
-                }
-              });
-            } else {
+        const req = {
+          ...data,
+          image: base64Image,
+        };
+        console.log(req, data);
+
+        await axios
+          .post(API_BASE_PATH + addEvent, req, {
+            headers: { "content-type": "application/x-www-form-urlencoded" },
+          })
+          .then(
+            (response) => {
+              if (response.data.responseCode === 100001) {
+                Swal.fire({
+                  icon: "success",
+                  title: "success",
+                  showConfirmButton: false,
+                  timer: 1000,
+                }).then((result) => {
+                  if (result.isDismissed) {
+                    onclose();
+                  }
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: `Invalid Event`,
+                  showConfirmButton: true,
+                });
+              }
+            },
+            (error) => {
               Swal.fire({
                 icon: "error",
-                title: `Invalid Event`,
+                title: `${error}`,
                 showConfirmButton: true,
               });
             }
-          },
-          (error) => {
-            Swal.fire({
-              icon: "error",
-              title: `${error}`,
-              showConfirmButton: true,
-            });
-          }
-        );
-    }}else {
- await axios
-        .post(API_BASE_PATH + upDateEvent+eventData.event_id, data, {
+          );
+      }
+    } else {
+      await axios
+        .post(API_BASE_PATH + upDateEvent + eventData.event_id, data, {
           headers: { "content-type": "application/x-www-form-urlencoded" },
         })
         .then(
@@ -105,7 +106,7 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
             if (response.data.responseCode === 100001) {
               Swal.fire({
                 icon: "success",
-              title: 'updated successfully',
+                title: 'updated successfully',
                 showConfirmButton: false,
                 timer: 1000,
               }).then((result) => {
@@ -174,8 +175,10 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
 
     reader.readAsDataURL(file);
   };
+  const handleInput = (e: any) => {
+    setEventData({ ...eventData, [e.target.name]: e.target.value })
+  }
 
-  
   return (
     <FormOuterContainer>
       <Form<addEventProps>
@@ -198,8 +201,10 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
                     width="12.4rem"
                     name={"title"}
                     type={"text"}
-                    label={"Name"}
-                     initialValue={eventData.title}
+                    label={"Name"
+                    }
+                    onChange={handleInput}
+                    initialValue={eventData.title}
                     placeholder="Enter the Event Title"
                   />
                 </FieldContainer>
@@ -211,8 +216,9 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
                     name={"location"}
                     type={"text"}
                     label={"Name"}
+                    onChange={handleInput}
                     placeholder=""
-                      initialValue={eventData.location}
+                    initialValue={eventData.location}
                   />
                 </FieldContainer>
                 <FieldContainer>
@@ -220,9 +226,10 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
                   <SelectField
                     name={"event_type"}
                     type={"select"}
+                    onChange={handleInput}
                     label={"Select Event Type"}
                     options={EventType}
-                      initialValue={eventData.event_type}
+                    initialValue={eventData.event_type}
                   />
                 </FieldContainer>
                 <FieldContainer>
@@ -232,7 +239,8 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
                     name={"event_date"}
                     type={"date"}
                     label={"Name"}
-                      initialValue={format(parseISO(eventData.event_date), "yyyy-MM-dd")}
+                    onChange={handleInput}
+                    initialValue={eventData.event_date && format(parseISO(eventData.event_date), "yyyy-MM-dd")}
                   />
                 </FieldContainer>
                 <FieldContainer>
@@ -240,9 +248,10 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
                   <SelectField
                     name={"status"}
                     type={"select"}
+                    onChange={handleInput}
                     label={"Select Status"}
                     options={StatusType}
-                      initialValue={eventData.status}
+                    initialValue={eventData.status}
                   />
                 </FieldContainer>
                 <FieldContainer>
@@ -251,6 +260,7 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
                     width="12.4rem"
                     name={"description"}
                     type={"textArea"}
+                    onChange={handleInput}
                     label={"Name"}
                     placeholder=""
                     initialValue={eventData.description}
@@ -261,11 +271,12 @@ const AddEventForm: React.FC<addEventProps> = ({onclose=() =>{},data}) => {
                   <InputField
                     width="12.4rem"
                     name={"image"}
+
                     type={"file"}
                     label={"Name"}
                     acceptType="image/*"
                     onChange={handleImageChange}
-                    // initialValue={eventData.image}
+                  // initialValue={eventData.image}
                   />
                 </FieldContainer>
 
