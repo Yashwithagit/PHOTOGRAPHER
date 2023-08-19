@@ -118,7 +118,7 @@ const Gallery: NextPage = () => {
   };
 
   const isAuthenticated = useAuth();
-  console.log(imageList.map((item: any, index) => item.image));
+
 
   if (!isAuthenticated) {
     // Handle authentication redirection or rendering an unauthorized message
