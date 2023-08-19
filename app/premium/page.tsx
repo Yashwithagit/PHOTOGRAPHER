@@ -96,7 +96,7 @@ const Premium: NextPage = () => {
           } else {
             Swal.fire({
               icon: "error",
-              title: `Something went wrong`,
+              title: response.data.responseMessage,
               showConfirmButton: true,
             });
           }
@@ -131,20 +131,7 @@ const Premium: NextPage = () => {
 
   return (
     <DashboardLayout>
-      <ButtonContainer>
-        {" "}
-        <Button
-          onClick={() =>
-            setModelData({
-              ...modelData,
-              show: true,
-              type: 1,
-            })
-          }
-        >
-          Add Package
-        </Button>
-      </ButtonContainer>
+      
 
       <Table
         columns={premiumTableHeader(actionHandle)}
