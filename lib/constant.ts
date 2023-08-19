@@ -71,7 +71,7 @@ export const RelatedType = [
     value: 1,
   },
   {
-    label: "Potrait",
+    label: "Portrait",
     value: 2,
   },
   {
