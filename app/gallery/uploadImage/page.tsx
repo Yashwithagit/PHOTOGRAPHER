@@ -78,8 +78,11 @@ const UploadImage: React.FC = () => {
       );
   };
   useEffect(() => {
-    if (!isNaN(Number(id))) {
-      detailsGallery(Number(id))
+    if (id !== null) {
+      const parsedId = parseInt(id, 10);
+      if (!isNaN(parsedId)) {
+        detailsGallery(parsedId)
+      }
     }
 
   }, [id])
@@ -150,6 +153,7 @@ const UploadImage: React.FC = () => {
   const handleInput = (e: any) => {
     setGalleryData({ ...galleryData, [e.target.name]: e.target.value });
   };
+  console.log(galleryData)
 
   return (
     <DashboardLayout>
