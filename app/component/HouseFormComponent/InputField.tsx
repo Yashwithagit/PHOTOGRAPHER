@@ -24,7 +24,7 @@ const InputField: React.FC<Props> = ({
   type,
   label,
   placeholder,
-  onChange=() => { },
+  onChange = () => { },
   initialValue,
   value,
   onChangeValidate,
@@ -42,13 +42,13 @@ const InputField: React.FC<Props> = ({
       {({ setValue, errors, props }) => (
         <>
           {value && setValue(value)}
-        
-        {type==='textArea' ? <TextArea
+
+          {type === 'textArea' ? <TextArea
             value={value}
             defaultValue={initialValue}
             name={name}
             // type={type}
-       
+
             rows={rows}
             onChange={(e: any) => {
               setValue(e.target.value);
@@ -56,22 +56,22 @@ const InputField: React.FC<Props> = ({
             }}
             placeholder={placeholder}
             style={style}
-          /> :<Input
+          /> : <Input
             value={value}
             defaultValue={initialValue}
             name={name}
             type={type}
             width={width}
             onChange={(e: any) => {
-              
-              setValue(e.target.value);
+
+              setValue(type === 'file' ? e.target.files[0] : e.target.value);
               onChange(e);
             }}
             placeholder={placeholder}
             style={style}
             accept={acceptType}
           />}
-          
+
 
           {/* {errors.map((error) => (
             <p key={error}>{error}</p>

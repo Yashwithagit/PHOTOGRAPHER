@@ -50,15 +50,20 @@ const UploadImage: React.FC = () => {
 
 
     if (formValidation(data)) {
-      const req = {
-        ...data,
-        p_id: localStorage.getItem("id"
-        ),
-        image: base64Image
-      }
-      console.log(req, data);
+
+      const formData = new FormData()
+
+      formData.append('image', data?.image ? data?.image : '')
+      const id = localStorage.getItem("id");
+      const idValue = id !== null ? id : ''; // Convert null to an empty string
+      formData.append('p_id', idValue);
+      formData.append('title', data?.title ? data?.title : '')
+      formData.append('description', data?.description ? data?.description : '')
+      formData.append('type', data?.type ? String(data.type) : '');
+      formData.append('caption', data?.caption ? data?.caption : '')
+
       await axios
-        .post(API_BASE_PATH + addGallery, req, {
+        .post(API_BASE_PATH + addGallery, formData, {
           headers: { "content-type": "application/x-www-form-urlencoded" },
         })
         .then(
@@ -200,7 +205,7 @@ const UploadImage: React.FC = () => {
                       type={"file"}
                       label={"Name"}
                       acceptType='image/*'
-                      onChange={handleImageChange}
+                    // onChange={handleImageChange}
 
                     />
 

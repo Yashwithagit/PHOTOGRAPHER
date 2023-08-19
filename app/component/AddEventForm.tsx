@@ -56,16 +56,22 @@ const AddEventForm: React.FC<addEventProps> = ({ onclose = () => { }, data }) =>
     if (formValidation(data)) {
       if (!eventData.event_id) {
 
-        const req = {
-          ...data,
-          p_id: localStorage.getItem("id"
-          ),
-          image: base64Image,
-        };
-        console.log(req, data);
+        const formData = new FormData()
+
+        formData.append('image', data?.image ? data?.image : '')
+        const id = localStorage.getItem("id");
+        const idValue = id !== null ? id : ''; // Convert null to an empty string
+        formData.append('p_id', idValue);
+        formData.append('title', data?.title ? data?.title : '')
+        formData.append('description', data?.description ? data?.description : '')
+        formData.append('type', data?.event_type ? String(data.event_type) : '');
+        formData.append('type', data?.event_date ? String(data.event_date) : '');
+        formData.append('type', data?.status ? String(data.status) : '');
+        formData.append('caption', data?.location ? data?.location : '')
+
 
         await axios
-          .post(API_BASE_PATH + addEvent, req, {
+          .post(API_BASE_PATH + addEvent, formData, {
             headers: { "content-type": "application/x-www-form-urlencoded" },
           })
           .then(
