@@ -18,85 +18,85 @@ import LoadingSpinner from 'app/component/LoadingSpinner';
 import { useAuth } from '@/context/auth';
 import DashboardLayout from 'app/component/DashboardLayout';
 
-interface uploadImageProps { 
-    title?:string;
-    description?:string;
-    type?:number;
-    p_id?:number;
-    caption?:string;
-    image?:string;
-   
+interface uploadImageProps {
+  title?: string;
+  description?: string;
+  type?: number;
+  p_id?: number;
+  caption?: string;
+  image?: string;
+
 }
 
 const UploadImage: React.FC = () => {
-   const [base64Image, setBase64Image] = useState<string | null>(null);
-    const router = useRouter();
-    const formValidation=(data:uploadImageProps) => {
-       
-        if(!data.title|| !data.description||  !data.caption||  !data.image||  !data.type )
-        { 
-          Swal.fire({
-          icon: 'warning',
-            title: 'info',
-            text: 'Please Enter Mandatory Fields...',
-            
-          })
-           console.log(data); 
-          return false
+  const [base64Image, setBase64Image] = useState<string | null>(null);
+  const router = useRouter();
+  const formValidation = (data: uploadImageProps) => {
 
-        }else return true
+    if (!data.title || !data.description || !data.caption || !data.image || !data.type) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'info',
+        text: 'Please Enter Mandatory Fields...',
 
-    }
-  const onFormSubmit = async(data:uploadImageProps) => {
-  
-     
-    if(formValidation(data)){ 
-         const req={
-          ...data,
-          p_id:1,
-          image:base64Image
-          }
-          console.log(req,data);
-        await axios
-          .post(API_BASE_PATH + addGallery, req, {
-            headers: { "content-type": "application/x-www-form-urlencoded" },
-          })
-          .then(
-            (response) => {
-              if (response.data.responseCode === 100001) {
-                Swal.fire({
-                  icon: 'success',
-                  title: 'success',
-                  showConfirmButton: false,
-                  timer: 1000
-                }).then((result) => {
-                  if (result.isDismissed) {
-                   router.push('/gallery')
+      })
+      console.log(data);
+      return false
+
+    } else return true
+
+  }
+  const onFormSubmit = async (data: uploadImageProps) => {
+
+
+    if (formValidation(data)) {
+      const req = {
+        ...data,
+        p_id: localStorage.getItem("id"
+        ),
+        image: base64Image
+      }
+      console.log(req, data);
+      await axios
+        .post(API_BASE_PATH + addGallery, req, {
+          headers: { "content-type": "application/x-www-form-urlencoded" },
+        })
+        .then(
+          (response) => {
+            if (response.data.responseCode === 100001) {
+              Swal.fire({
+                icon: 'success',
+                title: 'success',
+                showConfirmButton: false,
+                timer: 1000
+              }).then((result) => {
+                if (result.isDismissed) {
+                  router.push('/gallery')
                   //  onclose()
-                  }
-                })
-    
-              } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: `Invalid Gallery Details`,
-                    showConfirmButton: true,
-                   
-                  })
-              }
-            },
-            (error) => {
-                Swal.fire({
-                    icon: 'error',
-                    title: `${error}`,
-                    showConfirmButton: true,
-                   
-                  })
+                }
+              })
+
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: `Invalid Gallery Details`,
+                showConfirmButton: true,
+
+              })
             }
-          );
+          },
+          (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: `${error}`,
+              showConfirmButton: true,
+
+            })
+          }
+        );
     }
-   
-    
+
+
   };
   const isAuthenticated = useAuth();
 
@@ -128,102 +128,102 @@ const UploadImage: React.FC = () => {
 
   return (
     <DashboardLayout>
-    <FormOuterContainer>
-      <Form<uploadImageProps>
-        onSubmit={(data) => {
-        onFormSubmit(data)
-        }}
-      >
-        {({ isValid, submit, reset, value: formValue }) => {
-          return (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                submit();
-              }}
-            >
-              <>
-                <FieldContainer>
-                   
-                  <FieldLabel>Related</FieldLabel>
-                  <SelectField
+      <FormOuterContainer>
+        <Form<uploadImageProps>
+          onSubmit={(data) => {
+            onFormSubmit(data)
+          }}
+        >
+          {({ isValid, submit, reset, value: formValue }) => {
+            return (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  submit();
+                }}
+              >
+                <>
+                  <FieldContainer>
 
-                    name={"type"}
-                    type={"select"}
-                    label={"Select Type"}
-                 
-                    options={EventType}
-                  />
-                </FieldContainer>
-                <FieldContainer>
-                  <FieldLabel>Title</FieldLabel>
-                  <InputField
-                    width='12.4rem'
-                    name={"title"}
-                    type={"text"}
-                    label={"Name"}
-                   
-                    placeholder="Enter Title"
-                  />
-                </FieldContainer>
-                
-                <FieldContainer>
-                  <FieldLabel>Caption</FieldLabel>
-                  <InputField
-                    width='12.4rem'
-                    name={"caption"}
-                    type={"text"}
-                    label={"Name"}
-                   
-                    placeholder="Enter caption"
-                  />
-                </FieldContainer>
-               
-               
-                
-                 <FieldContainer>
-                  <FieldLabel>Description</FieldLabel>
-                  <InputField
-                    width='12.4rem'
-                    name={"description"}
-                    type={"textArea"}
-                    label={"Name"}
-                   
-                    placeholder="Enter a description"
-                  />
-                </FieldContainer>
-                <FieldContainer>
-                  <FieldLabel>Select Image</FieldLabel>
-                   <InputField
-                    width='12.4rem'
-                    name={"image"}
-                    type={"file"}
-                    label={"Name"}
-                  acceptType='image/*'
-                    onChange={handleImageChange}
-                   
-                  />
+                    <FieldLabel>Related</FieldLabel>
+                    <SelectField
 
-                </FieldContainer>
+                      name={"type"}
+                      type={"select"}
+                      label={"Select Type"}
 
-                <ButtonContainer>
-<Button onClick={(e) => {
-  reset() 
-               router.push('/gallery')
-         
-              }}>
-                    Cancel
-                  </Button>
-                  <Button onClick={submit}>
-                    Submit
-                  </Button>
-                </ButtonContainer>
-              </>
-            </form>
-          );
-        }}
-      </Form>
-    </FormOuterContainer>
+                      options={EventType}
+                    />
+                  </FieldContainer>
+                  <FieldContainer>
+                    <FieldLabel>Title</FieldLabel>
+                    <InputField
+                      width='12.4rem'
+                      name={"title"}
+                      type={"text"}
+                      label={"Name"}
+
+                      placeholder="Enter Title"
+                    />
+                  </FieldContainer>
+
+                  <FieldContainer>
+                    <FieldLabel>Caption</FieldLabel>
+                    <InputField
+                      width='12.4rem'
+                      name={"caption"}
+                      type={"text"}
+                      label={"Name"}
+
+                      placeholder="Enter caption"
+                    />
+                  </FieldContainer>
+
+
+
+                  <FieldContainer>
+                    <FieldLabel>Description</FieldLabel>
+                    <InputField
+                      width='12.4rem'
+                      name={"description"}
+                      type={"textArea"}
+                      label={"Name"}
+
+                      placeholder="Enter a description"
+                    />
+                  </FieldContainer>
+                  <FieldContainer>
+                    <FieldLabel>Select Image</FieldLabel>
+                    <InputField
+                      width='12.4rem'
+                      name={"image"}
+                      type={"file"}
+                      label={"Name"}
+                      acceptType='image/*'
+                      onChange={handleImageChange}
+
+                    />
+
+                  </FieldContainer>
+
+                  <ButtonContainer>
+                    <Button onClick={(e) => {
+                      reset()
+                      router.push('/gallery')
+
+                    }}>
+                      Cancel
+                    </Button>
+                    <Button onClick={submit}>
+                      Submit
+                    </Button>
+                  </ButtonContainer>
+                </>
+              </form>
+            );
+          }}
+        </Form>
+      </FormOuterContainer>
     </DashboardLayout>
   )
 }

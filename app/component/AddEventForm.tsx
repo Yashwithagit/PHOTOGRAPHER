@@ -58,6 +58,8 @@ const AddEventForm: React.FC<addEventProps> = ({ onclose = () => { }, data }) =>
 
         const req = {
           ...data,
+          p_id: localStorage.getItem("id"
+          ),
           image: base64Image,
         };
         console.log(req, data);
