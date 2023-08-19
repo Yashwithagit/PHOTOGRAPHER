@@ -131,20 +131,7 @@ const Premium: NextPage = () => {
 
   return (
     <DashboardLayout>
-      <ButtonContainer>
-        {" "}
-        <Button
-          onClick={() =>
-            setModelData({
-              ...modelData,
-              show: true,
-              type: 1,
-            })
-          }
-        >
-          Add Package
-        </Button>
-      </ButtonContainer>
+      
 
       <Table
         columns={premiumTableHeader(actionHandle)}
