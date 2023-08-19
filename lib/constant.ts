@@ -71,7 +71,7 @@ export const RelatedType = [
     value: 1,
   },
   {
-    label: "Ceremony",
+    label: "Potrait",
     value: 2,
   },
   {
@@ -79,15 +79,15 @@ export const RelatedType = [
     value: 3,
   },
   {
-    label: "Nature",
+    label: "Engagement",
     value: 4,
   },
   {
-    label: "Travel",
+    label: "Beauty and Fashion",
     value: 5,
   },
   {
-    label: "Cinema",
+    label: "Corporate",
     value: 6,
   },
 ];
