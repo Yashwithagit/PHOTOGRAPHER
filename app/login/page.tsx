@@ -19,15 +19,10 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
-
-
-
 const Login = () => {
   const [login, setLogin] = useState({
     email: "",
     password: "",
-   
-
   });
   const router = useRouter();
 
@@ -48,49 +43,42 @@ const Login = () => {
         (response) => {
           if (response.data.responseCode === 100001) {
             Swal.fire({
-              icon: 'success',
-              title: 'success',
+              icon: "success",
+              title: "success",
               showConfirmButton: false,
-              timer: 1000
+              timer: 1000,
             }).then((result) => {
               if (result.isDismissed) {
                 /* Read more about handling dismissals below */
-                localStorage.setItem("id", response.data.responseData[0].pid
-);
-               
+                localStorage.setItem("id", response.data.responseData[0].pid);
+
                 router.push("/dashBoard");
               }
-            })
-
+            });
           } else {
             Swal.fire({
-              icon: 'error',
-              title: 'Invalid user',
+              icon: "error",
+              title: "Invalid user",
               showConfirmButton: true,
-             
-            })
+            });
           }
         },
         (error) => {
           Swal.fire({
-            icon: 'error',
+            icon: "error",
             title: `${error}`,
             showConfirmButton: true,
-           
-          })
+          });
         }
       );
   };
 
   return (
     <>
-
       <CardContainer>
-
         <CardHeader>Login</CardHeader>
         <h4>Photographer Panel</h4>
         <FormContainer onSubmit={handleSubmit}>
-        
           <FormField>
             <FormFieldIcon>
               <MdIcons.MdEmail />
@@ -116,9 +104,7 @@ const Login = () => {
             />
           </FormField>
 
-
           <SubmitButton type="submit">LOGIN</SubmitButton>
-
         </FormContainer>
         <LinkContainer>
           Don&#x27;t have account?
@@ -126,11 +112,9 @@ const Login = () => {
             <LinkText>Signup </LinkText>
           </Link>
         </LinkContainer>
-       
       </CardContainer>
     </>
   );
 };
 
 export default Login;
-

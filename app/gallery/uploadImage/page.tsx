@@ -1,19 +1,18 @@
 "use client";
 
-import { AppColors, DurationList, EventType, StatusType } from '@/lib/constant';
-import { FieldLabelProps, PackageProps } from '@/lib/types';
-import { Button, CardContainer } from '@/styles/globalStyles'
-import React, { useEffect, useState } from 'react'
+import { RelatedType } from '@/lib/constant';
+import { FieldLabelProps } from '@/lib/types';
+import { Button } from '@/styles/globalStyles'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 
 import { Form } from "houseform";
-import { NextPage } from 'next';
 import InputField from 'app/component/HouseFormComponent/InputField';
 import SelectField from 'app/component/HouseFormComponent/SelectField';
 import axios from 'axios';
-import { API_BASE_PATH, addGallery, addPackage } from '@/lib/apiPath';
+import { API_BASE_PATH, addGallery, galleryDetail } from '@/lib/apiPath';
 import Swal from 'sweetalert2';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import LoadingSpinner from 'app/component/LoadingSpinner';
 import { useAuth } from '@/context/auth';
 import DashboardLayout from 'app/component/DashboardLayout';
@@ -29,8 +28,10 @@ interface uploadImageProps {
 }
 
 const UploadImage: React.FC = () => {
-  const [base64Image, setBase64Image] = useState<string | null>(null);
+  const [galleryData, setGalleryData] = useState<uploadImageProps>({})
   const router = useRouter();
+  const searchParams = useSearchParams()
+  const id = searchParams.get('id')
   const formValidation = (data: uploadImageProps) => {
 
     if (!data.title || !data.description || !data.caption || !data.image || !data.type) {
@@ -40,25 +41,66 @@ const UploadImage: React.FC = () => {
         text: 'Please Enter Mandatory Fields...',
 
       })
-      console.log(data);
+
       return false
 
     } else return true
 
   }
+
+  // gallery detail
+  const detailsGallery = async (id: number) => {
+    await axios
+      .get(API_BASE_PATH + galleryDetail + id, {
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+      })
+      .then(
+        (response) => {
+          if (response.data.responseCode === 100001) {
+            setGalleryData(response.data.responseData)
+
+
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: `Something went wrong`,
+              showConfirmButton: true,
+            });
+          }
+        },
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: `${error}`,
+            showConfirmButton: true,
+          });
+        }
+      );
+  };
+  useEffect(() => {
+    if (!isNaN(Number(id))) {
+      detailsGallery(Number(id))
+    }
+
+  }, [id])
   const onFormSubmit = async (data: uploadImageProps) => {
 
 
     if (formValidation(data)) {
-      const req = {
-        ...data,
-        p_id: localStorage.getItem("id"
-        ),
-        image: base64Image
-      }
-      console.log(req, data);
+
+      const formData = new FormData()
+
+      formData.append('image', data?.image ? data?.image : '')
+      const id = localStorage.getItem("id");
+      const idValue = id !== null ? id : ''; // Convert null to an empty string
+      formData.append('p_id', idValue);
+      formData.append('title', data?.title ? data?.title : '')
+      formData.append('description', data?.description ? data?.description : '')
+      formData.append('type', data?.type ? String(data.type) : '');
+      formData.append('caption', data?.caption ? data?.caption : '')
+
       await axios
-        .post(API_BASE_PATH + addGallery, req, {
+        .post(API_BASE_PATH + addGallery, formData, {
           headers: { "content-type": "application/x-www-form-urlencoded" },
         })
         .then(
@@ -105,25 +147,8 @@ const UploadImage: React.FC = () => {
     return <LoadingSpinner></LoadingSpinner>;
   }
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-      convertToBase64(file);
-    }
-  };
-  const convertToBase64 = (file: File) => {
-    const reader = new FileReader();
-
-    reader.onload = (event: ProgressEvent<FileReader>) => {
-      if (event.target) {
-        const base64String = event.target.result as string;
-        const base64Image = base64String.split(",")[1];
-        console.log(base64Image);
-        setBase64Image(base64Image);
-      }
-    };
-
-    reader.readAsDataURL(file);
+  const handleInput = (e: any) => {
+    setGalleryData({ ...galleryData, [e.target.name]: e.target.value });
   };
 
   return (
@@ -136,90 +161,87 @@ const UploadImage: React.FC = () => {
         >
           {({ isValid, submit, reset, value: formValue }) => {
             return (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  submit();
-                }}
-              >
-                <>
-                  <FieldContainer>
 
-                    <FieldLabel>Related</FieldLabel>
-                    <SelectField
+              <div>
+                <FieldContainer>
 
-                      name={"type"}
-                      type={"select"}
-                      label={"Select Type"}
+                  <FieldLabel>Related</FieldLabel>
+                  <SelectField
 
-                      options={EventType}
-                    />
-                  </FieldContainer>
-                  <FieldContainer>
-                    <FieldLabel>Title</FieldLabel>
-                    <InputField
-                      width='12.4rem'
-                      name={"title"}
-                      type={"text"}
-                      label={"Name"}
+                    name={"type"}
+                    type={"select"}
+                    onChange={handleInput}
+                    label={"Select Type"}
+                    options={RelatedType}
+                    initialValue={galleryData?.type}
+                  />
+                </FieldContainer>
+                <FieldContainer>
+                  <FieldLabel>Title</FieldLabel>
+                  <InputField
+                    width='12.4rem'
+                    name={"title"}
+                    type={"text"}
+                    label={"Name"}
+                    onChange={handleInput}
+                    initialValue={galleryData?.title}
+                    placeholder="Enter Title"
+                  />
+                </FieldContainer>
 
-                      placeholder="Enter Title"
-                    />
-                  </FieldContainer>
-
-                  <FieldContainer>
-                    <FieldLabel>Caption</FieldLabel>
-                    <InputField
-                      width='12.4rem'
-                      name={"caption"}
-                      type={"text"}
-                      label={"Name"}
-
-                      placeholder="Enter caption"
-                    />
-                  </FieldContainer>
+                <FieldContainer>
+                  <FieldLabel>Caption</FieldLabel>
+                  <InputField
+                    width='12.4rem'
+                    name={"caption"}
+                    type={"text"}
+                    label={"Name"}
+                    onChange={handleInput}
+                    initialValue={galleryData?.caption}
+                    placeholder="Enter caption"
+                  />
+                </FieldContainer>
 
 
 
-                  <FieldContainer>
-                    <FieldLabel>Description</FieldLabel>
-                    <InputField
-                      width='12.4rem'
-                      name={"description"}
-                      type={"textArea"}
-                      label={"Name"}
+                <FieldContainer>
+                  <FieldLabel>Description</FieldLabel>
+                  <InputField
+                    width='12.4rem'
+                    name={"description"}
+                    type={"textArea"}
+                    label={"Name"}
+                    onChange={handleInput}
+                    initialValue={galleryData?.description}
+                    placeholder="Enter a description"
+                  />
+                </FieldContainer>
+                <FieldContainer>
+                  <FieldLabel>Select Image</FieldLabel>
+                  <InputField
+                    width='12.4rem'
+                    name={"image"}
+                    type={"file"}
+                    label={"Name"}
+                    acceptType='image/*'
 
-                      placeholder="Enter a description"
-                    />
-                  </FieldContainer>
-                  <FieldContainer>
-                    <FieldLabel>Select Image</FieldLabel>
-                    <InputField
-                      width='12.4rem'
-                      name={"image"}
-                      type={"file"}
-                      label={"Name"}
-                      acceptType='image/*'
-                      onChange={handleImageChange}
+                  />
 
-                    />
+                </FieldContainer>
 
-                  </FieldContainer>
+                <ButtonContainer>
+                  <Button type='button' onClick={() => {
+                    router.push('/gallery')
 
-                  <ButtonContainer>
-                    <Button onClick={(e) => {
-                      reset()
-                      router.push('/gallery')
+                  }}>
+                    Cancel
+                  </Button>
+                  <Button onClick={submit}>
+                    Submit
+                  </Button>
+                </ButtonContainer>
+              </div>
 
-                    }}>
-                      Cancel
-                    </Button>
-                    <Button onClick={submit}>
-                      Submit
-                    </Button>
-                  </ButtonContainer>
-                </>
-              </form>
             );
           }}
         </Form>
@@ -244,6 +266,7 @@ const FormOuterContainer = styled.div`
   padding: 2rem;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
 const FieldContainer = styled.div`

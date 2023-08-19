@@ -18,7 +18,7 @@ export default function MenuItem({
   menuItem: { name, icon: Icon, url, depth, subItems },
 }: MenuItemProps) {
   const [isExpanded, toggleExpanded] = useState(false);
-console.log(url);
+
 
   const router = useRouter();
   const path = usePathname();
@@ -28,7 +28,7 @@ console.log(url);
   const onClick = () => {
     toggleExpanded((prev) => !prev);
   };
-  const onClickLogout=()=>{
+  const onClickLogout = () => {
     Swal.fire({
       title: 'Are you sure?',
       text: "You want to Logout!",
@@ -37,14 +37,14 @@ console.log(url);
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes'
-    }).then((result:any) => {
+    }).then((result: any) => {
       if (result.isConfirmed) {
         localStorage.removeItem("id")
-        
+
         Swal.fire(
-          
+
           'success'
-        ).then((result:any)=>{
+        ).then((result: any) => {
           router.push("/login")
         })
       }
@@ -54,7 +54,7 @@ console.log(url);
     <>
       <MenuItemContainer className={selected ? "selected" : ""} depth={depth}>
         {url ? (
-          <Link href={url}>
+          <Link href={url} onClick={() => router.push(url)}>
             <div className="menu-item">
               <Icon />
               <span>{name}</span>

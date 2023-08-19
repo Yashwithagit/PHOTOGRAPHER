@@ -14,9 +14,9 @@ import {
 import Link from "next/link";
 import * as MdIcons from "react-icons/md";
 import * as RiIcons from "react-icons/ri";
-import { AiOutlineUser } from 'react-icons/ai'
-import { BsLink, BsGenderAmbiguous } from 'react-icons/bs'
-import { FaRegAddressCard } from 'react-icons/fa'
+import { AiOutlineUser } from "react-icons/ai";
+import { BsLink, BsGenderAmbiguous } from "react-icons/bs";
+import { FaRegAddressCard } from "react-icons/fa";
 import { API_BASE_PATH, addPhotographer } from "@/lib/apiPath";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -48,13 +48,7 @@ const SignUp = () => {
   });
   const router = useRouter();
   const formValidation = (data: signUpProps) => {
-    if (
-
-      data.password ===
-      data.confirm_password
-
-    ) {
-
+    if (data.password === data.confirm_password) {
       return true;
     } else {
       Swal.fire({
@@ -62,24 +56,30 @@ const SignUp = () => {
         title: "info",
         text: "Password should match",
       });
-      return false
+      return false;
     }
   };
   const handleSubmit = async (event: any) => {
     // Stop the form from submitting and refreshing the page.
     event.preventDefault();
     if (formValidation(login)) {
-      const formData = {
-        email: login?.email,
-        password: login?.password,
-        first_name: login?.first_name,
-        last_name: login?.last_name,
-        address: login?.address,
-        website_link: login?.website_link,
-        gender: login?.gender,
-        image: login?.image,
-        unique_id: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
-      };
+      const formData = new FormData();
+
+      formData.append("image", login?.image ? login?.image : "");
+      formData.append("email", login?.email ? login?.email : "");
+      formData.append("password", login?.password ? login?.password : "");
+      formData.append("first_name", login?.first_name ? login?.first_name : "");
+      formData.append("last_name", login?.last_name ? login?.last_name : "");
+      formData.append("address", login?.address ? login?.address : "");
+      formData.append(
+        "website_link",
+        login?.website_link ? login?.website_link : ""
+      );
+      formData.append("gender", login?.gender ? login?.gender : "");
+      formData.append(
+        "unique_id",
+        String(Math.floor(Math.random() * (100 - 1 + 1)) + 1)
+      );
 
       await axios
         .post(API_BASE_PATH + addPhotographer, formData, {
@@ -89,64 +89,39 @@ const SignUp = () => {
           (response) => {
             if (response.data.responseCode === 100001) {
               Swal.fire({
-                icon: 'success',
-                title: 'success',
+                icon: "success",
+                title: "success",
                 showConfirmButton: false,
-                timer: 1000
+                timer: 1000,
               }).then((result) => {
                 if (result.isDismissed) {
                   /* Read more about handling dismissals below */
 
-
                   router.push("/login");
                 }
-              })
-
+              });
             } else {
               Swal.fire({
-                icon: 'error',
-                title: 'User Already exists',
+                icon: "error",
+                title: "User Already exists",
                 showConfirmButton: true,
-
-              })
+              });
             }
           },
           (error) => {
             Swal.fire({
-              icon: 'error',
+              icon: "error",
               title: `${error}`,
               showConfirmButton: true,
-
-            })
+            });
           }
         );
     }
   };
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-      convertToBase64(file);
-    }
-  };
-  const convertToBase64 = (file: File) => {
-    const reader = new FileReader();
 
-    reader.onload = (event: ProgressEvent<FileReader>) => {
-      if (event.target) {
-        const base64String = event.target.result as string;
-        const base64Image = base64String.split(",")[1];
-        console.log(base64Image);
-        setLogin({ ...login, image: base64Image })
-      }
-    };
-
-    reader.readAsDataURL(file);
-  };
   return (
     <>
-
       <CardContainer width="45%">
-
         <CardHeader>Sign UP</CardHeader>
 
         <FormContainer onSubmit={handleSubmit}>
@@ -161,7 +136,9 @@ const SignUp = () => {
                   required
                   placeholder="First Name"
                   name="first_name"
-                  onChange={(e) => setLogin({ ...login, first_name: e.target.value })}
+                  onChange={(e) =>
+                    setLogin({ ...login, first_name: e.target.value })
+                  }
                 />
               </FormField>
               <FormField>
@@ -173,7 +150,9 @@ const SignUp = () => {
                   required
                   placeholder="Last Name"
                   name="last_name"
-                  onChange={(e) => setLogin({ ...login, last_name: e.target.value })}
+                  onChange={(e) =>
+                    setLogin({ ...login, last_name: e.target.value })
+                  }
                 />
               </FormField>
               <FormField>
@@ -185,7 +164,9 @@ const SignUp = () => {
                   required
                   placeholder="Gender"
                   name="gender"
-                  onChange={(e) => setLogin({ ...login, gender: e.target.value })}
+                  onChange={(e) =>
+                    setLogin({ ...login, gender: e.target.value })
+                  }
                 />
               </FormField>
               <FormField>
@@ -197,7 +178,9 @@ const SignUp = () => {
                   required
                   placeholder="Address"
                   name="address"
-                  onChange={(e) => setLogin({ ...login, address: e.target.value })}
+                  onChange={(e) =>
+                    setLogin({ ...login, address: e.target.value })
+                  }
                 />
               </FormField>
             </FormFieldContainer>
@@ -211,7 +194,9 @@ const SignUp = () => {
                   required
                   placeholder="Email"
                   name="email"
-                  onChange={(e) => setLogin({ ...login, email: e.target.value })}
+                  onChange={(e) =>
+                    setLogin({ ...login, email: e.target.value })
+                  }
                 />
               </FormField>
               <FormField>
@@ -223,7 +208,9 @@ const SignUp = () => {
                   name="password"
                   required
                   placeholder="Password"
-                  onChange={(e) => setLogin({ ...login, password: e.target.value })}
+                  onChange={(e) =>
+                    setLogin({ ...login, password: e.target.value })
+                  }
                 />
               </FormField>
               <FormField>
@@ -235,7 +222,9 @@ const SignUp = () => {
                   name="confirm_password"
                   required
                   placeholder="Confirm Password"
-                  onChange={(e) => setLogin({ ...login, confirm_password: e.target.value })}
+                  onChange={(e) =>
+                    setLogin({ ...login, confirm_password: e.target.value })
+                  }
                 />
               </FormField>
               <FormField>
@@ -247,10 +236,11 @@ const SignUp = () => {
                   required
                   placeholder="Website Link"
                   name="website_link"
-                  onChange={(e) => setLogin({ ...login, website_link: e.target.value })}
+                  onChange={(e) =>
+                    setLogin({ ...login, website_link: e.target.value })
+                  }
                 />
               </FormField>
-
             </FormFieldContainer>
           </FormFieldOuterContainer>
           <FormFieldOuterContainer>
@@ -260,10 +250,9 @@ const SignUp = () => {
               required
               placeholder="image"
               name="image"
-              onChange={(e) => handleImageChange(e)}
-            /></FormFieldOuterContainer>
+            />
+          </FormFieldOuterContainer>
           <SubmitButton type="submit">SIGN UP</SubmitButton>
-
         </FormContainer>
         <LinkContainer>
           Already have account?
@@ -271,7 +260,6 @@ const SignUp = () => {
             <LinkText>Login </LinkText>
           </Link>
         </LinkContainer>
-
       </CardContainer>
     </>
   );
@@ -280,7 +268,7 @@ const SignUp = () => {
 export default SignUp;
 const FormFieldContainer = styled.div`
   display: flex;
-   flex-direction: column;
+  flex-direction: column;
   gap: 1rem;
 `;
 const FormFieldOuterContainer = styled.div`

@@ -6,33 +6,25 @@ import * as FaIcons from "react-icons/fa";
 import { FieldIcon } from "@/styles/globalStyles";
 
 import DashboardLayout from "app/component/DashboardLayout";
-import LoadingSpinner from "app/component/LoadingSpinner";
-import { useAuth } from "@/context/auth";
 
 const DashBoard: NextPage = () => {
-  // const isAuthenticated = useAuth();
-
-  // if (!isAuthenticated) {
-  //   // Handle authentication redirection or rendering an unauthorized message
-  //   return <LoadingSpinner></LoadingSpinner>;
-  // }
   return (
     <DashboardLayout>
-    <CardContainer>
-      <Card>
-        <FieldIcon width="3rem">
-          <FaIcons.FaUserFriends />
-        </FieldIcon>
-        Total Customers 12
-      </Card>
-      <Card>
-        {" "}
-        <FieldIcon width="3rem">
-          <FaIcons.FaUserFriends />
-        </FieldIcon>{" "}
-        Total Photographer 20
-      </Card>
-    </CardContainer>
+      <CardContainer>
+        <Card>
+          <FieldIcon width="3rem">
+            <FaIcons.FaUserFriends />
+          </FieldIcon>
+          Total Customers 12
+        </Card>
+        <Card>
+          {" "}
+          <FieldIcon width="3rem">
+            <FaIcons.FaUserFriends />
+          </FieldIcon>{" "}
+          Total Photographer 20
+        </Card>
+      </CardContainer>
     </DashboardLayout>
   );
 };
