@@ -97,3 +97,5 @@ export const actionList = {
   view: 3,
   book: 4,
 };
+
+export const EVENT_STATUS = ["Draft", "Publish"];

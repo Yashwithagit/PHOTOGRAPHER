@@ -6,7 +6,7 @@ import * as FaIcons from "react-icons/fa";
 import * as MdIcons from "react-icons/md";
 import * as GrIcons from "react-icons/gr";
 import * as BsIcons from "react-icons/bs";
-import { actionList } from "./constant";
+import { EVENT_STATUS, actionList } from "./constant";
 
 export const premiumTableHeader = (actionHandle: Function) => {
   return [
@@ -78,6 +78,20 @@ export const eventsTableHeader = (actionHandle: Function) => {
     {
       Header: "Status",
       accessor: "status",
+      Cell: ({
+        row,
+      }: {
+        row: {
+          getToggleRowSelectedProps: any;
+          original: {
+            status: number;
+          };
+        };
+      }) => {
+        return (
+          <>{EVENT_STATUS[row.original.status - 1]}</>
+        );
+      },
     },
     {
       Header: "Event Date",

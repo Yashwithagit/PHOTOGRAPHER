@@ -1,8 +1,8 @@
 "use client";
 
-import { CardContainerProps, IconsProps } from "@/lib/types";
+import { ButtonProps, CardContainerProps, IconsProps } from "@/lib/types";
 import { AppColors } from "lib/constant";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const CardContainer = styled.div<CardContainerProps>`
   position: absolute;
@@ -111,7 +111,7 @@ export const PageTitle = styled.h1`
   padding: 0;
 `;
 
-export const Button = styled.button`
+export const Button = styled.button<ButtonProps>`
   outline: none;
   padding: 0.7rem 3rem;
   border-radius: 1.5rem;
@@ -120,6 +120,13 @@ export const Button = styled.button`
   width: auto;
   border: 2px solid #00022e;
   background: #00022e;
+  ${(props) =>
+    props.disabled &&
+    css`
+      background-color: #ccc;
+      cursor: not-allowed;
+      border: none;
+    `};
 
   color: ${AppColors.White};
   &:hover,

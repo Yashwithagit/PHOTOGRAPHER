@@ -26,6 +26,7 @@ const Events: NextPage = () => {
   const [eventLists, setEventList] = useState([]);
   const [pageList, setPageList] = useState([]);
   const [eventData, setEventData] = useState([])
+  const [actionType, setActionType] = useState(0)
   const [fixedPages, setFixedPages] = useState(0)
   const getEventList = async () => {
     await axios
@@ -162,6 +163,7 @@ const Events: NextPage = () => {
         }
       })
     } else {
+      (action === actionList.edit) ? setActionType(action) : setActionType(action)
       detailsEvent(id)
     }
 
@@ -188,7 +190,7 @@ const Events: NextPage = () => {
       />
       {modelData.show && (
         <PopUp popUptype={FROM_POP_UP_TYPE}>
-          <AddEventForm onclose={handleFormClose} data={eventData} />
+          <AddEventForm onclose={handleFormClose} data={eventData} type={actionType} />
         </PopUp>
       )}
 

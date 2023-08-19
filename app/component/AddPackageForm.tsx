@@ -38,7 +38,7 @@ const AddPackageForm: React.FC<addPackageProps> = ({ onclose = () => { } }) => {
   };
   const onFormSubmit = async (data: addPackageProps) => {
     if (formValidation(data)) {
-      console.log(data);
+
       await axios
         .post(API_BASE_PATH + addPackage, data, {
           headers: { "content-type": "application/x-www-form-urlencoded" },

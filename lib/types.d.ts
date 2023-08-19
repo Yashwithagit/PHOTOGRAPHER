@@ -115,8 +115,12 @@ export interface ModelDataProps {
   isSuccess?: boolean;
 }
 export interface TableTitleProps {
-  show: string; 
+  show: string;
 }
 export interface CardContainerProps {
-  width?: string; 
+  width?: string;
+}
+
+export interface ButtonProps {
+  disabled?: boolean;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { EventType, StatusType } from "@/lib/constant";
+import { EventType, StatusType, actionList } from "@/lib/constant";
 import { FieldLabelProps } from "@/lib/types";
 import { Button } from "@/styles/globalStyles";
 import React, { useState } from "react";
@@ -26,15 +26,17 @@ interface addEventProps {
   image?: any;
   onclose?: Function;
   data?: any;
+  type?: number;
 }
 
 const AddEventForm: React.FC<addEventProps> = ({
-  onclose = () => {},
+  onclose = () => { },
   data,
+  type
 }) => {
-  const router = useRouter();
+
   const [eventData, setEventData] = useState<any>(data ? data : {});
-  const [base64Image, setBase64Image] = useState<string | null>(null);
+
 
   const formValidation = (data: addEventProps) => {
     if (
@@ -113,42 +115,44 @@ const AddEventForm: React.FC<addEventProps> = ({
             }
           );
       }
-    } else {
-      await axios
-        .post(API_BASE_PATH + upDateEvent + eventData.event_id, data, {
-          headers: { "content-type": "application/x-www-form-urlencoded" },
-        })
-        .then(
-          (response) => {
-            if (response.data.responseCode === 100001) {
-              Swal.fire({
-                icon: "success",
-                title: "updated successfully",
-                showConfirmButton: false,
-                timer: 1000,
-              }).then((result) => {
-                if (result.isDismissed) {
-                  onclose();
-                }
-              });
-            } else {
+      else {
+        await axios
+          .post(API_BASE_PATH + upDateEvent + eventData.event_id, data, {
+            headers: { "content-type": "application/x-www-form-urlencoded" },
+          })
+          .then(
+            (response) => {
+              if (response.data.responseCode === 100001) {
+                Swal.fire({
+                  icon: "success",
+                  title: "updated successfully",
+                  showConfirmButton: false,
+                  timer: 1000,
+                }).then((result) => {
+                  if (result.isDismissed) {
+                    onclose();
+                  }
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: `Invalid Event`,
+                  showConfirmButton: true,
+                });
+              }
+            },
+            (error) => {
               Swal.fire({
                 icon: "error",
-                title: `Invalid Event`,
+                title: `${error}`,
                 showConfirmButton: true,
               });
             }
-          },
-          (error) => {
-            Swal.fire({
-              icon: "error",
-              title: `${error}`,
-              showConfirmButton: true,
-            });
-          }
-        );
+          );
+      }
     }
   };
+  console.log(type == actionList.view)
   const isAuthenticated = useAuth();
 
   if (!isAuthenticated) {
@@ -252,7 +256,7 @@ const AddEventForm: React.FC<addEventProps> = ({
                   label={"Name"}
                   acceptType="image/*"
 
-                  // initialValue={eventData.image}
+                // initialValue={eventData.image}
                 />
               </FieldContainer>
 
@@ -265,7 +269,8 @@ const AddEventForm: React.FC<addEventProps> = ({
                 >
                   Cancel
                 </Button>
-                <Button onClick={submit}>Submit</Button>
+
+                <Button disabled={type == actionList.view} onClick={submit}>Submit</Button>
               </ButtonContainer>
             </main>
           );
