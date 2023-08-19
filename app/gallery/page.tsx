@@ -137,13 +137,14 @@ const Gallery: NextPage = () => {
           {imageList.length !== 0 &&
             imageList.map((item: any, index) => (
               <GalleryImgContainer key={index}>
-                <GalleryImg src={item?.image}></GalleryImg>
+                <GalleryImg src={item?.url}></GalleryImg>
                 <GalleryImgBottom>
                   {item.title}
                   <div>
                     <FieldIcon
                       onClick={() =>
-                        actionHandle(item.gallery_id, actionList.edit)
+                        actionHandle(item.gallery_id
+                          , actionList.edit)
                       }
                     >
                       <FcEditImage />

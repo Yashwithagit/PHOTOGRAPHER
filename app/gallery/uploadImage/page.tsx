@@ -3,16 +3,16 @@
 import { RelatedType } from '@/lib/constant';
 import { FieldLabelProps } from '@/lib/types';
 import { Button } from '@/styles/globalStyles'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 
 import { Form } from "houseform";
 import InputField from 'app/component/HouseFormComponent/InputField';
 import SelectField from 'app/component/HouseFormComponent/SelectField';
 import axios from 'axios';
-import { API_BASE_PATH, addGallery } from '@/lib/apiPath';
+import { API_BASE_PATH, addGallery, galleryDetail } from '@/lib/apiPath';
 import Swal from 'sweetalert2';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import LoadingSpinner from 'app/component/LoadingSpinner';
 import { useAuth } from '@/context/auth';
 import DashboardLayout from 'app/component/DashboardLayout';
@@ -28,7 +28,10 @@ interface uploadImageProps {
 }
 
 const UploadImage: React.FC = () => {
+  const [galleryData, setGalleryData] = useState<uploadImageProps>({})
   const router = useRouter();
+  const searchParams = useSearchParams()
+  const id = searchParams.get('id')
   const formValidation = (data: uploadImageProps) => {
 
     if (!data.title || !data.description || !data.caption || !data.image || !data.type) {
@@ -44,6 +47,42 @@ const UploadImage: React.FC = () => {
     } else return true
 
   }
+
+  // gallery detail
+  const detailsGallery = async (id: number) => {
+    await axios
+      .get(API_BASE_PATH + galleryDetail + id, {
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+      })
+      .then(
+        (response) => {
+          if (response.data.responseCode === 100001) {
+            setGalleryData(response.data.responseData)
+
+
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: `Something went wrong`,
+              showConfirmButton: true,
+            });
+          }
+        },
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: `${error}`,
+            showConfirmButton: true,
+          });
+        }
+      );
+  };
+  useEffect(() => {
+    if (!isNaN(Number(id))) {
+      detailsGallery(Number(id))
+    }
+
+  }, [id])
   const onFormSubmit = async (data: uploadImageProps) => {
 
 
@@ -108,7 +147,9 @@ const UploadImage: React.FC = () => {
     return <LoadingSpinner></LoadingSpinner>;
   }
 
-
+  const handleInput = (e: any) => {
+    setGalleryData({ ...galleryData, [e.target.name]: e.target.value });
+  };
 
   return (
     <DashboardLayout>
@@ -129,9 +170,10 @@ const UploadImage: React.FC = () => {
 
                     name={"type"}
                     type={"select"}
+                    onChange={handleInput}
                     label={"Select Type"}
-
                     options={RelatedType}
+                    initialValue={galleryData?.type}
                   />
                 </FieldContainer>
                 <FieldContainer>
@@ -141,7 +183,8 @@ const UploadImage: React.FC = () => {
                     name={"title"}
                     type={"text"}
                     label={"Name"}
-
+                    onChange={handleInput}
+                    initialValue={galleryData?.title}
                     placeholder="Enter Title"
                   />
                 </FieldContainer>
@@ -153,7 +196,8 @@ const UploadImage: React.FC = () => {
                     name={"caption"}
                     type={"text"}
                     label={"Name"}
-
+                    onChange={handleInput}
+                    initialValue={galleryData?.caption}
                     placeholder="Enter caption"
                   />
                 </FieldContainer>
@@ -167,7 +211,8 @@ const UploadImage: React.FC = () => {
                     name={"description"}
                     type={"textArea"}
                     label={"Name"}
-
+                    onChange={handleInput}
+                    initialValue={galleryData?.description}
                     placeholder="Enter a description"
                   />
                 </FieldContainer>
@@ -185,7 +230,7 @@ const UploadImage: React.FC = () => {
                 </FieldContainer>
 
                 <ButtonContainer>
-                  <Button type='button' onClick={(e) => {
+                  <Button type='button' onClick={() => {
                     router.push('/gallery')
 
                   }}>

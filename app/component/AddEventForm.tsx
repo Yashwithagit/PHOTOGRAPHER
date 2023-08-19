@@ -34,8 +34,8 @@ const AddEventForm: React.FC<addEventProps> = ({
   data,
   type
 }) => {
-
-  const [eventData, setEventData] = useState<any>(data ? data : {});
+  console.log(type)
+  const [eventData, setEventData] = useState<any>(data && type !== 0 ? data : {});
 
 
   const formValidation = (data: addEventProps) => {

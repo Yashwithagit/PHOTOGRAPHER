@@ -174,11 +174,14 @@ const Events: NextPage = () => {
   return (
     <DashboardLayout>
 
-      <ButtonContainer>  <Button onClick={() => setModelData({
-        ...modelData,
-        show: true,
-        type: 1,
-      })}>Add Event</Button></ButtonContainer>
+      <ButtonContainer>  <Button onClick={() => {
+        setActionType(0)
+        setModelData({
+          ...modelData,
+          show: true,
+          type: 1,
+        })
+      }}>Add Event</Button></ButtonContainer>
 
 
       <Table
