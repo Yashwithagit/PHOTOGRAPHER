@@ -197,7 +197,7 @@ const GalleryList: NextPage = () => {
       </ButtonContainer>
       <OuterContainer>
         <GalleryContainer>
-          {imageList.length !== 0 &&
+          {imageList.length !== 0 ? (
             imageList.map((item: any, index) => (
               <GalleryImgContainer key={index}>
                 <GalleryImg src={item?.url}></GalleryImg>
@@ -223,7 +223,7 @@ const GalleryList: NextPage = () => {
                   </div>
                 </GalleryImgBottom>
               </GalleryImgContainer>
-            ))}
+            ))) : <h1 style={{ alignItems: "center" }}>No Data Found</h1>}
         </GalleryContainer>
       </OuterContainer>
       {modelData.show && (
