@@ -51,6 +51,7 @@ const Login = () => {
               if (result.isDismissed) {
                 /* Read more about handling dismissals below */
                 localStorage.setItem("id", response.data.responseData[0].pid);
+                localStorage.setItem("token", response.data.responseData[0].token);
 
                 router.push("/dashBoard");
               }

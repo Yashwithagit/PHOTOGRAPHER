@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "app/component/LoadingSpinner";
 import { useAuth } from "@/context/auth";
+import Thumbnail from "./Thumbnail";
 
 interface addEventProps {
   title?: string;
@@ -34,6 +35,7 @@ const AddEventForm: React.FC<addEventProps> = ({
   data,
   type
 }) => {
+  console.log(data)
   const [imageNameStatus, setImageNameStatus] = useState(true)
   const [eventData, setEventData] = useState<any>(data && type !== 0 ? data : {});
 
@@ -57,10 +59,11 @@ const AddEventForm: React.FC<addEventProps> = ({
     } else return true;
   };
   const onFormSubmit = async (data: addEventProps) => {
-
+    
     if (formValidation(data)) {
-
-      if (!eventData.event_id) {
+      console.log(isNaN(eventData.event_id))
+      if (isNaN(eventData.event_id)) {
+        console.log(data)
         const formData = new FormData();
         formData.append("image", data?.image ? data?.image : "");
         const id = localStorage.getItem("id");
@@ -185,12 +188,13 @@ const AddEventForm: React.FC<addEventProps> = ({
   }
 
   const handleInput = (e: any) => {
+    console.log(e.target.value)
     setImageNameStatus(!(type !== 0 && e.target.name === 'image'));
 
     setEventData({ ...eventData, [e.target.name]: e.target.value });
 
   };
-  console.log(data)
+  
   return (
     <FormOuterContainer>
       <Form<addEventProps>
@@ -227,7 +231,7 @@ const AddEventForm: React.FC<addEventProps> = ({
                 />
               </FieldContainer>
               <FieldContainer>
-                <FieldLabel>Event Type</FieldLabel>
+                <FieldLabel>Event Type{eventData.event_type}</FieldLabel>
                 <SelectField
                   name={"event_type"}
                   type={"select"}
@@ -283,7 +287,9 @@ const AddEventForm: React.FC<addEventProps> = ({
                   label={"Name"}
                   acceptType='image/*'
                   // initialValue={galleryData?.image}
-                  onChange={handleInput}
+                  onChange={(e:any)=>
+                    setEventData({ ...eventData, [e.target.name]: e.target.files[0] })
+            }
                 />
                 {/* {type !== 0 && imageNameStatus && (
                   <label>{galleryData?.image}</label>
@@ -291,7 +297,7 @@ const AddEventForm: React.FC<addEventProps> = ({
 
 
               </FieldContainer>
-
+                <Thumbnail src={eventData.url} alt="images" />
 
               <ButtonContainer>
                 <Button
