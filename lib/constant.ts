@@ -99,3 +99,47 @@ export const actionList = {
 };
 
 export const EVENT_STATUS = ["Draft", "Publish"];
+
+// Image Path
+export const ImagePath = {
+  wedding: `/assets/wedding.jpg`,
+  Portrait: `/assets/potrait.jpg`,
+  Beauty: `/assets/beauty.jpg`,
+  Corporate: `/assets/corperate.jpg`,
+  Event: `/assets/event.jpg`,
+  Engagement: `/assets/engagement.jpg`,
+};
+
+//wedding gallery
+export const galleryItemList = [
+  {
+    id: 1,
+    title: "Wedding Photography",
+    image: ImagePath.wedding,
+  },
+  {
+    id: 2,
+    title: "Portrait Photography",
+    image: ImagePath.Portrait,
+  },
+  {
+    id: 3,
+    title: "Event Photography",
+    image: ImagePath.Event,
+  },
+  {
+    id: 4,
+    title: "Engagement Photography",
+    image: ImagePath.Engagement,
+  },
+  {
+    id: 5,
+    title: "Beauty and Fashion",
+    image: ImagePath.Beauty,
+  },
+  {
+    id: 6,
+    title: "Corporate Photography",
+    image: ImagePath.Corporate,
+  },
+];

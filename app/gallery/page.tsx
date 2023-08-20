@@ -1,7 +1,7 @@
 "use client";
 
 import { API_BASE_PATH, deleteGallery, galleryList } from "@/lib/apiPath";
-import { actionList } from "@/lib/constant";
+import { actionList, galleryItemList } from "@/lib/constant";
 import { ModelDataProps } from "@/lib/types";
 import { Button, ButtonContainer, FieldIcon } from "@/styles/globalStyles";
 import DashboardLayout from "app/component/DashboardLayout";
@@ -26,96 +26,13 @@ const Gallery: NextPage = () => {
     type: 0,
   });
   const router = useRouter();
-  const [imageList, setImageList] = useState([]);
 
-  const getImageList = async () => {
-    await axios
-      .get(API_BASE_PATH + galleryList, {
-        headers: { "content-type": "application/x-www-form-urlencoded" },
-      })
-      .then(
-        (response) => {
-          if (response.data.responseCode === 100001) {
-            const newData = response?.data?.responseData?.map(
-              (item: any, index: number) => {
-                item["index"] = index + 1;
-                return item;
-              }
-            );
-            setImageList(newData);
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: `Something went wrong`,
-              showConfirmButton: true,
-            });
-          }
-        },
-        (error) => {
-          Swal.fire({
-            icon: "error",
-            title: `${error}`,
-            showConfirmButton: true,
-          });
-        }
-      );
-  };
-  useEffect(() => {
-    getImageList();
-  }, []);
 
-  // delete package
-  const deleteGalleryImage = async (id: number) => {
-    await axios
-      .get(API_BASE_PATH + deleteGallery + id, {
-        headers: { "content-type": "application/x-www-form-urlencoded" },
-      })
-      .then(
-        (response) => {
-          if (response.data.responseCode === 100001) {
-            Swal.fire({
-              icon: "success",
-              title: `Image has been Deleted from Gallery`,
-              showConfirmButton: true,
-            });
-            getImageList();
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: `Something went wrong`,
-              showConfirmButton: true,
-            });
-          }
-        },
-        (error) => {
-          Swal.fire({
-            icon: "error",
-            title: `${error}`,
-            showConfirmButton: true,
-          });
-        }
-      );
-  };
-  // handle action
-  const actionHandle = (id: number, action: number) => {
-    if (action === actionList.delete) {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You want to Delete a Image.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes",
-      }).then((result: any) => {
-        if (result.isConfirmed) {
-          deleteGalleryImage(id);
-        }
-      });
-    } else {
-      router.push(`/gallery/uploadImage?id=${id}`);
-    }
-  };
+
+
+
+
+
 
   const isAuthenticated = useAuth();
 
@@ -126,38 +43,15 @@ const Gallery: NextPage = () => {
   }
   return (
     <DashboardLayout>
-      <ButtonContainer>
-        {" "}
-        <Button onClick={() => router.push("/gallery/uploadImage")}>
-          Upload photos
-        </Button>
-      </ButtonContainer>
       <OuterContainer>
         <GalleryContainer>
-          {imageList.length !== 0 &&
-            imageList.map((item: any, index) => (
-              <GalleryImgContainer key={index}>
-                <GalleryImg src={item?.url}></GalleryImg>
+          {
+            galleryItemList.map((item: any, index) => (
+              <GalleryImgContainer key={index} onClick={() => router.push(`/gallery/galleryList?id=${item.id}`)}>
+                <GalleryImg src={item.image}></GalleryImg>
                 <GalleryImgBottom>
                   {item.title}
-                  <div>
-                    <FieldIcon
-                      onClick={() =>
-                        actionHandle(item.gallery_id
-                          , actionList.edit)
-                      }
-                    >
-                      <FcEditImage />
-                    </FieldIcon>{" "}
-                    <FieldIcon
-                      onClick={() =>
-                        actionHandle(item.gallery_id, actionList.delete)
-                      }
-                    >
-                      {" "}
-                      <MdDeleteForever />{" "}
-                    </FieldIcon>
-                  </div>
+
                 </GalleryImgBottom>
               </GalleryImgContainer>
             ))}
@@ -172,16 +66,15 @@ const GalleryContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  overflow: scroll;
-  height: 100%;
+  
+  
   grid-gap: 2rem;
   justify-items: center;
   align-items: center;
 `;
 const OuterContainer = styled.div`
   margin: 1rem;
-  overflow-y: auto;
-  height: 35rem;
+  
 `;
 
 const GalleryImg = styled.img`
@@ -192,12 +85,12 @@ const GalleryImg = styled.img`
   border-radius: 1.5rem;
 `;
 const GalleryImgContainer = styled.figure`
-  background-color: blue;
   width: 18rem;
   height: 18rem;
   box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.4);
   border-radius: 1.5rem;
   position: relative;
+  cursor: pointer;
 `;
 const GalleryImgBottom = styled.figcaption`
   background-color: rgba(0, 0, 0, 0.4);
@@ -211,4 +104,5 @@ const GalleryImgBottom = styled.figcaption`
   height: 3rem;
   border-radius: 0rem 0rem 1.5rem 1.5rem;
   font-size: 1.5rem;
+ color: red;
 `;
