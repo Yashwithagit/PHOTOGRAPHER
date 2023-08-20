@@ -34,7 +34,7 @@ const AddEventForm: React.FC<addEventProps> = ({
   data,
   type
 }) => {
-  console.log(type)
+  const [imageNameStatus, setImageNameStatus] = useState(true)
   const [eventData, setEventData] = useState<any>(data && type !== 0 ? data : {});
 
 
@@ -45,8 +45,8 @@ const AddEventForm: React.FC<addEventProps> = ({
       !data.event_type ||
       !data.event_date ||
       !data.status ||
-      !data.description ||
-      !data.image
+      !data.description
+      // !data.image
     ) {
       Swal.fire({
         icon: "warning",
@@ -57,10 +57,11 @@ const AddEventForm: React.FC<addEventProps> = ({
     } else return true;
   };
   const onFormSubmit = async (data: addEventProps) => {
+    console.log(data)
     if (formValidation(data)) {
+
       if (!eventData.event_id) {
         const formData = new FormData();
-
         formData.append("image", data?.image ? data?.image : "");
         const id = localStorage.getItem("id");
         const idValue = id !== null ? id : ""; // Convert null to an empty string
@@ -71,15 +72,15 @@ const AddEventForm: React.FC<addEventProps> = ({
           data?.description ? data?.description : ""
         );
         formData.append(
-          "type",
+          "event_type",
           data?.event_type ? String(data.event_type) : ""
         );
         formData.append(
-          "type",
+          "event_date",
           data?.event_date ? String(data.event_date) : ""
         );
-        formData.append("type", data?.status ? String(data.status) : "");
-        formData.append("caption", data?.location ? data?.location : "");
+        formData.append("status", data?.status ? String(data.status) : "");
+        formData.append("location", data?.location ? data?.location : "");
 
         await axios
           .post(API_BASE_PATH + addEvent, formData, {
@@ -116,8 +117,30 @@ const AddEventForm: React.FC<addEventProps> = ({
           );
       }
       else {
+        const formData = new FormData();
+
+        formData.append("image", data?.image ? data?.image : "");
+        const id = localStorage.getItem("id");
+        const idValue = id !== null ? id : ""; // Convert null to an empty string
+        formData.append("p_id", idValue);
+        formData.append("title", data?.title ? data?.title : "");
+        formData.append(
+          "description",
+          data?.description ? data?.description : ""
+        );
+        formData.append(
+          "event_type",
+          data?.event_type ? String(data.event_type) : ""
+        );
+        formData.append(
+          "event_date",
+          data?.event_date ? String(data.event_date) : ""
+        );
+        formData.append("status", data?.status ? String(data.status) : "");
+        formData.append("location", data?.location ? data?.location : "");
+
         await axios
-          .post(API_BASE_PATH + upDateEvent + eventData.event_id, data, {
+          .post(API_BASE_PATH + upDateEvent + eventData.event_id, formData, {
             headers: { "content-type": "application/x-www-form-urlencoded" },
           })
           .then(
@@ -152,7 +175,7 @@ const AddEventForm: React.FC<addEventProps> = ({
       }
     }
   };
-  console.log(type == actionList.view)
+
   const isAuthenticated = useAuth();
 
   if (!isAuthenticated) {
@@ -161,9 +184,12 @@ const AddEventForm: React.FC<addEventProps> = ({
   }
 
   const handleInput = (e: any) => {
-    setEventData({ ...eventData, [e.target.name]: e.target.value });
-  };
+    setImageNameStatus(!(type !== 0 && e.target.name === 'image'));
 
+    setEventData({ ...eventData, [e.target.name]: e.target.value });
+
+  };
+  console.log(data)
   return (
     <FormOuterContainer>
       <Form<addEventProps>
@@ -250,15 +276,21 @@ const AddEventForm: React.FC<addEventProps> = ({
               <FieldContainer>
                 <FieldLabel>Select Image</FieldLabel>
                 <InputField
-                  width="12.4rem"
+                  width='12.4rem'
                   name={"image"}
                   type={"file"}
                   label={"Name"}
-                  acceptType="image/*"
-
-                // initialValue={eventData.image}
+                  acceptType='image/*'
+                  // initialValue={galleryData?.image}
+                  onChange={handleInput}
                 />
+                {/* {type !== 0 && imageNameStatus && (
+                  <label>{galleryData?.image}</label>
+                )} */}
+
+
               </FieldContainer>
+
 
               <ButtonContainer>
                 <Button

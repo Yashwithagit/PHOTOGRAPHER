@@ -9,7 +9,7 @@ type Props = {
   label: string;
   placeholder?: string;
   onChange?: Function;
-  initialValue?: number;
+  initialValue?: number | string;
   options: Array<optionProps>;
 };
 
@@ -22,7 +22,9 @@ const SelectField: React.FC<Props> = ({
   options,
   initialValue
 }) => {
+  console.log(name, initialValue)
   return (
+
     <Field<string> name={name} initialValue={""}>
       {({ value, setValue, errors }) => (
         <>

@@ -10,7 +10,7 @@ import { Form } from "houseform";
 import InputField from 'app/component/HouseFormComponent/InputField';
 import SelectField from 'app/component/HouseFormComponent/SelectField';
 import axios from 'axios';
-import { API_BASE_PATH, addGallery, galleryDetail } from '@/lib/apiPath';
+import { API_BASE_PATH, addGallery, galleryDetail, updateGallery } from '@/lib/apiPath';
 import Swal from 'sweetalert2';
 import { useRouter, useSearchParams } from 'next/navigation';
 import LoadingSpinner from 'app/component/LoadingSpinner';
@@ -37,6 +37,7 @@ const UploadImage: React.FC<uploadImageProps> = ({
   type
 }) => {
   const [galleryData, setGalleryData] = useState<any>(data && formType !== 0 ? data : {})
+  const [status, setStatus] = useState(true)
 
   const formValidation = (data: uploadImageProps) => {
 
@@ -60,55 +61,105 @@ const UploadImage: React.FC<uploadImageProps> = ({
 
 
     if (formValidation(data)) {
+      if (!galleryData?.gallery_id) {
 
-      const formData = new FormData()
+        const formData = new FormData()
 
-      formData.append('image', data?.image ? data?.image : '')
-      const id = localStorage.getItem("id");
-      const idValue = id !== null ? id : ''; // Convert null to an empty string
-      formData.append('p_id', idValue);
-      formData.append('title', data?.title ? data?.title : '')
-      formData.append('description', data?.description ? data?.description : '')
-      formData.append('type', type ? String(type) : '');
-      formData.append('caption', data?.caption ? data?.caption : '')
+        formData.append('image', data?.image ? data?.image : '')
+        const id = localStorage.getItem("id");
+        const idValue = id !== null ? id : ''; // Convert null to an empty string
+        formData.append('p_id', idValue);
+        formData.append('title', data?.title ? data?.title : '')
+        formData.append('description', data?.description ? data?.description : '')
+        formData.append('type', type ? String(type) : '');
+        formData.append('caption', data?.caption ? data?.caption : '')
 
-      await axios
-        .post(API_BASE_PATH + addGallery, formData, {
-          headers: { "content-type": "application/x-www-form-urlencoded" },
-        })
-        .then(
-          (response) => {
-            if (response.data.responseCode === 100001) {
-              Swal.fire({
-                icon: 'success',
-                title: 'success',
-                showConfirmButton: false,
-                timer: 1000
-              }).then((result) => {
-                if (result.isDismissed) {
-                  // router.push('/gallery/galleryList')
-                  onclose()
-                }
-              })
+        await axios
+          .post(API_BASE_PATH + addGallery, formData, {
+            headers: { "content-type": "application/x-www-form-urlencoded" },
+          })
+          .then(
+            (response) => {
+              if (response.data.responseCode === 100001) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'success',
+                  showConfirmButton: false,
+                  timer: 1000
+                }).then((result) => {
+                  if (result.isDismissed) {
+                    // router.push('/gallery/galleryList')
+                    onclose()
+                  }
+                })
 
-            } else {
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: `Invalid Gallery Details`,
+                  showConfirmButton: true,
+
+                })
+              }
+            },
+            (error) => {
               Swal.fire({
                 icon: 'error',
-                title: `Invalid Gallery Details`,
+                title: `${error}`,
                 showConfirmButton: true,
 
               })
             }
-          },
-          (error) => {
-            Swal.fire({
-              icon: 'error',
-              title: `${error}`,
-              showConfirmButton: true,
+          );
+      } else {
+        const formData = new FormData()
 
-            })
-          }
-        );
+        formData.append('image', data?.image ? data?.image : '')
+        const id = localStorage.getItem("id");
+        const idValue = id !== null ? id : ''; // Convert null to an empty string
+        formData.append('p_id', idValue);
+        formData.append('title', data?.title ? data?.title : '')
+        formData.append('description', data?.description ? data?.description : '')
+        formData.append('type', type ? String(type) : '');
+        formData.append('caption', data?.caption ? data?.caption : '')
+        await axios
+          .post(API_BASE_PATH + updateGallery + galleryData.gallery_id, formData, {
+            headers: { "content-type": "application/x-www-form-urlencoded" },
+          })
+          .then(
+            (response) => {
+              if (response.data.responseCode === 100001) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'success',
+                  showConfirmButton: false,
+                  timer: 1000
+                }).then((result) => {
+                  if (result.isDismissed) {
+                    // router.push('/gallery/galleryList')
+                    onclose()
+                  }
+                })
+
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: `Invalid Gallery Details`,
+                  showConfirmButton: true,
+
+                })
+              }
+            },
+            (error) => {
+              Swal.fire({
+                icon: 'error',
+                title: `${error}`,
+                showConfirmButton: true,
+
+              })
+            }
+          );
+      }
     }
 
 
@@ -121,13 +172,12 @@ const UploadImage: React.FC<uploadImageProps> = ({
   }
 
   const handleInput = (e: any) => {
-    if (e.target.name === "image") {
-      setGalleryData({ ...galleryData, [e.target.name]: e.target.file[0] });
-    } else {
-      setGalleryData({ ...galleryData, [e.target.name]: e.target.value });
-    }
+    setStatus(!(type !== 0 && e.target.name === 'image'));
+
+    setGalleryData({ ...galleryData, [e.target.name]: e.target.value });
+
   };
-  console.log(typeof galleryData?.image)
+
 
   return (
 
@@ -193,6 +243,9 @@ const UploadImage: React.FC<uploadImageProps> = ({
                   // initialValue={galleryData?.image}
                   onChange={handleInput}
                 />
+                {type !== 0 && status && (
+                  <label>{galleryData?.image}</label>
+                )}
 
               </FieldContainer>
 

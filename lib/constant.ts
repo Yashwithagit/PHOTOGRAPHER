@@ -17,16 +17,16 @@ export const POP_UP_TYPE = "popup";
 
 export const DurationList = [
   {
-    label: "1 Month",
-    value: 1,
+    label: "1M",
+    value: "1M",
   },
   {
-    label: "2 Month",
-    value: 2,
+    label: "2M",
+    value: "2M",
   },
   {
-    label: "1 Year",
-    value: 3,
+    label: "1Y",
+    value: "1Y",
   },
 ];
 export const StatusType = [
