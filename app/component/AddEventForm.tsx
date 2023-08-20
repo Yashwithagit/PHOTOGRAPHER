@@ -47,8 +47,8 @@ const AddEventForm: React.FC<addEventProps> = ({
       !data.event_type ||
       !data.event_date ||
       !data.status ||
-      !data.description
-      // !data.image
+      !data.description || (!eventData.event_id && !eventData.image) ||
+      (!data.image && type == 0)
     ) {
       Swal.fire({
         icon: "warning",
@@ -59,7 +59,7 @@ const AddEventForm: React.FC<addEventProps> = ({
     } else return true;
   };
   const onFormSubmit = async (data: addEventProps) => {
-    console.log(data) 
+    console.log(data)
     if (formValidation(data)) {
       console.log(isNaN(eventData.event_id))
       if (isNaN(eventData.event_id)) {
@@ -194,7 +194,7 @@ const AddEventForm: React.FC<addEventProps> = ({
     setEventData({ ...eventData, [e.target.name]: e.target.value });
 
   };
-  
+
   return (
     <FormOuterContainer>
       <Form<addEventProps>
@@ -287,9 +287,9 @@ const AddEventForm: React.FC<addEventProps> = ({
                   label={"Name"}
                   acceptType='image/*'
                   // initialValue={galleryData?.image}
-                  onChange={(e:any)=>
+                  onChange={(e: any) =>
                     setEventData({ ...eventData, [e.target.name]: e.target.files[0] })
-            }
+                  }
                 />
                 {/* {type !== 0 && imageNameStatus && (
                   <label>{galleryData?.image}</label>
@@ -297,7 +297,7 @@ const AddEventForm: React.FC<addEventProps> = ({
 
 
               </FieldContainer>
-                <Thumbnail src={eventData.url} alt="images" />
+              {type !== 0 && <Thumbnail src={eventData.url} alt="images" />}
 
               <ButtonContainer>
                 <Button
