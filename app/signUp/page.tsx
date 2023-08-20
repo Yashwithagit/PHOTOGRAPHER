@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import {
   CardContainer,
   CardHeader,
@@ -30,7 +30,7 @@ interface signUpProps {
   first_name?: string;
   last_name?: string;
   address?: string;
-  image?: string;
+  image: File | null;
   website_link?: string;
   gender?: string;
 }
@@ -44,8 +44,13 @@ const SignUp = () => {
     address: "",
     website_link: "",
     gender: "",
-    image: "",
+    image: null,
   });
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0] || null as any;
+
+    setLogin({ ...login, image: selectedFile });
+  };
   const router = useRouter();
   const formValidation = (data: signUpProps) => {
     if (data.password === data.confirm_password) {
@@ -59,6 +64,7 @@ const SignUp = () => {
       return false;
     }
   };
+
   const handleSubmit = async (event: any) => {
     // Stop the form from submitting and refreshing the page.
     event.preventDefault();
@@ -250,6 +256,9 @@ const SignUp = () => {
               required
               placeholder="image"
               name="image"
+              accept="image/*"
+              onChange={handleImageChange
+              }
             />
           </FormFieldOuterContainer>
           <SubmitButton type="submit">SIGN UP</SubmitButton>
