@@ -156,7 +156,7 @@ export const userManagementTableHeader = [
   },
   {
     Header: "User Name",
-    accessor: "user_name",
+    accessor: "username",
   },
   {
     Header: "User Email",
@@ -172,50 +172,7 @@ export const userManagementTableHeader = [
   },
 ];
 
-export const userManagementData = [
-  {
-    user_id: "123456789-",
-    user_name: "<NAME>",
-    email: "<EMAIL>",
-    contact: "987654321",
-    address: "Bangalore",
-  },
-  {
-    user_id: "123456789-",
-    user_name: "<NAME>",
-    email: "<EMAIL>",
-    contact: "987654321",
-    address: "Bangalore",
-  },
-  {
-    user_id: "123456789-",
-    user_name: "<NAME>",
-    email: "<EMAIL>",
-    contact: "987654321",
-    address: "Bangalore",
-  },
-  {
-    user_id: "123456789-",
-    user_name: "<NAME>",
-    email: "<EMAIL>",
-    contact: "987654321",
-    address: "Bangalore",
-  },
-  {
-    user_id: "123456789-",
-    user_name: "<NAME>",
-    email: "<EMAIL>",
-    contact: "987654321",
-    address: "Bangalore",
-  },
-  {
-    user_id: "123456789-",
-    user_name: "<NAME>",
-    email: "<EMAIL>",
-    contact: "987654321",
-    address: "Bangalore",
-  },
-];
+
 
 
 

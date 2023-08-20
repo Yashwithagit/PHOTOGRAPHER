@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/auth";
-import { API_BASE_PATH, userFeedback, usersList } from "@/lib/apiPath";
+import { API_BASE_PATH, usersList } from "@/lib/apiPath";
 import {
 
   userManagementTableHeader,
