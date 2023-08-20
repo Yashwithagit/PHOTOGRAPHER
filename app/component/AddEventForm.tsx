@@ -57,7 +57,7 @@ const AddEventForm: React.FC<addEventProps> = ({
     } else return true;
   };
   const onFormSubmit = async (data: addEventProps) => {
-    console.log(data)
+
     if (formValidation(data)) {
 
       if (!eventData.event_id) {
@@ -117,27 +117,28 @@ const AddEventForm: React.FC<addEventProps> = ({
           );
       }
       else {
+        console.log(eventData)
         const formData = new FormData();
 
-        formData.append("image", data?.image ? data?.image : "");
+        formData.append("image", eventData?.image ? eventData?.image : "");
         const id = localStorage.getItem("id");
         const idValue = id !== null ? id : ""; // Convert null to an empty string
         formData.append("p_id", idValue);
-        formData.append("title", data?.title ? data?.title : "");
+        formData.append("title", eventData?.title ? eventData?.title : "");
         formData.append(
           "description",
-          data?.description ? data?.description : ""
+          eventData?.description ? eventData?.description : ""
         );
         formData.append(
           "event_type",
-          data?.event_type ? String(data.event_type) : ""
+          eventData?.event_type ? String(eventData.event_type) : ""
         );
         formData.append(
           "event_date",
-          data?.event_date ? String(data.event_date) : ""
+          eventData?.event_date ? String(eventData.event_date) : ""
         );
-        formData.append("status", data?.status ? String(data.status) : "");
-        formData.append("location", data?.location ? data?.location : "");
+        formData.append("status", eventData?.status ? String(eventData.status) : "");
+        formData.append("location", eventData?.location ? eventData?.location : "");
 
         await axios
           .post(API_BASE_PATH + upDateEvent + eventData.event_id, formData, {

@@ -114,14 +114,14 @@ const UploadImage: React.FC<uploadImageProps> = ({
       } else {
         const formData = new FormData()
 
-        formData.append('image', data?.image ? data?.image : '')
+        formData.append('image', galleryData?.image ? galleryData?.image : '')
         const id = localStorage.getItem("id");
         const idValue = id !== null ? id : ''; // Convert null to an empty string
         formData.append('p_id', idValue);
-        formData.append('title', data?.title ? data?.title : '')
-        formData.append('description', data?.description ? data?.description : '')
+        formData.append('title', galleryData?.title ? galleryData?.title : '')
+        formData.append('description', galleryData?.description ? galleryData?.description : '')
         formData.append('type', type ? String(type) : '');
-        formData.append('caption', data?.caption ? data?.caption : '')
+        formData.append('caption', galleryData?.caption ? galleryData?.caption : '')
         await axios
           .post(API_BASE_PATH + updateGallery + galleryData.gallery_id, formData, {
             headers: { "content-type": "application/x-www-form-urlencoded" },
