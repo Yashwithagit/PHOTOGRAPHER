@@ -22,7 +22,7 @@ const SelectField: React.FC<Props> = ({
   options,
   initialValue
 }) => {
-  console.log(name, initialValue)
+ 
   return (
 
     <Field<string> name={name} initialValue={""}>
@@ -30,13 +30,14 @@ const SelectField: React.FC<Props> = ({
         <>
           <Select
             defaultValue={initialValue}
+            value={value}
             name={name}
             onChange={(e) => {
               setValue(e.target.value);
               onChange(e);
             }}
           >
-            <option value={value}>{label}</option>
+            <option defaultValue={value} >{label}</option>
             {options.map((option: any, index: number) => (
               <option key={index} value={option.value}>{option.label}</option>
             ))}
