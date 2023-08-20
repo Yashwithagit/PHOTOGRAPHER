@@ -59,7 +59,7 @@ const AddEventForm: React.FC<addEventProps> = ({
     } else return true;
   };
   const onFormSubmit = async (data: addEventProps) => {
-    
+    console.log(data) 
     if (formValidation(data)) {
       console.log(isNaN(eventData.event_id))
       if (isNaN(eventData.event_id)) {
@@ -120,7 +120,7 @@ const AddEventForm: React.FC<addEventProps> = ({
           );
       }
       else {
-        console.log(eventData)
+        console.log(data)
         const formData = new FormData();
 
         formData.append("image", eventData?.image ? eventData?.image : "");
@@ -134,7 +134,7 @@ const AddEventForm: React.FC<addEventProps> = ({
         );
         formData.append(
           "event_type",
-          eventData?.event_type ? String(eventData.event_type) : ""
+          data?.event_type ? String(data.event_type) : String(eventData.event_type)
         );
         formData.append(
           "event_date",

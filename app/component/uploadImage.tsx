@@ -241,11 +241,13 @@ const UploadImage: React.FC<uploadImageProps> = ({
                   label={"Name"}
                   acceptType='image/*'
                   // initialValue={galleryData?.image}
-                  onChange={handleInput}
+                  onChange={(e:any)=>{
+                    setGalleryData({ ...galleryData, [e.target.name]: e.target.files[0] });
+                  }}
                 />
-                {type !== 0 && status && (
+                {/* {type !== 0 && status && (
                   <label>{galleryData?.image}</label>
-                )}
+                )} */}
 
               </FieldContainer>
 
