@@ -188,6 +188,7 @@ const AddEventForm: React.FC<addEventProps> = ({
   }
 
   const handleInput = (e: any) => {
+    console.log(e.target.value)
     setImageNameStatus(!(type !== 0 && e.target.name === 'image'));
 
     setEventData({ ...eventData, [e.target.name]: e.target.value });
@@ -286,7 +287,9 @@ const AddEventForm: React.FC<addEventProps> = ({
                   label={"Name"}
                   acceptType='image/*'
                   // initialValue={galleryData?.image}
-                  onChange={handleInput}
+                  onChange={(e:any)=>
+                    setEventData({ ...eventData, [e.target.name]: e.target.files[0] })
+            }
                 />
                 {/* {type !== 0 && imageNameStatus && (
                   <label>{galleryData?.image}</label>
