@@ -145,3 +145,19 @@ export const FieldIcon = styled.span<IconsProps>`
   line-height: 1rem;
   cursor: pointer;
 `;
+
+export const Select = styled.select`
+  padding: 0.7rem 2.8rem;
+  border-radius: 0.5rem;
+  text-align: left;
+  height: auto;
+  border: 1px solid #999999;
+  font-size: 0.8rem;
+  background-color: #ffffff;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+  outline: none;
+  border: 1px solid #999999;
+  margin-left: 0.5rem;
+`;

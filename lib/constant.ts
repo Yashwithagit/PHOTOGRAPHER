@@ -15,20 +15,6 @@ export const AppColors = {
 export const FROM_POP_UP_TYPE = "form";
 export const POP_UP_TYPE = "popup";
 
-export const DurationList = [
-  {
-    label: "1M",
-    value: "1M",
-  },
-  {
-    label: "2M",
-    value: "2M",
-  },
-  {
-    label: "1Y",
-    value: "1Y",
-  },
-];
 export const StatusType = [
   {
     label: "Draft",
