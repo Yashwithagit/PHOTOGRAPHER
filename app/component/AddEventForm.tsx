@@ -36,7 +36,7 @@ const AddEventForm: React.FC<addEventProps> = ({
   type
 }) => {
   console.log(data)
-  const [imageNameStatus, setImageNameStatus] = useState(true)
+
   const [eventData, setEventData] = useState<any>(data && type !== 0 ? data : {});
 
 
@@ -188,8 +188,7 @@ const AddEventForm: React.FC<addEventProps> = ({
   }
 
   const handleInput = (e: any) => {
-    console.log(e.target.value)
-    setImageNameStatus(!(type !== 0 && e.target.name === 'image'));
+
 
     setEventData({ ...eventData, [e.target.name]: e.target.value });
 
@@ -291,9 +290,7 @@ const AddEventForm: React.FC<addEventProps> = ({
                     setEventData({ ...eventData, [e.target.name]: e.target.files[0] })
                   }
                 />
-                {/* {type !== 0 && imageNameStatus && (
-                  <label>{galleryData?.image}</label>
-                )} */}
+
 
 
               </FieldContainer>
