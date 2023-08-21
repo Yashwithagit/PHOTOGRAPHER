@@ -124,6 +124,7 @@ const UploadImage: React.FC<uploadImageProps> = ({
         formData.append('description', galleryData?.description ? galleryData?.description : '')
         formData.append('type', galleryData?.type ? String(galleryData?.type) : '');
         formData.append('caption', galleryData?.caption ? galleryData?.caption : '')
+        console.log(formData)
         await axios
           .post(API_BASE_PATH + updateGallery + galleryData.gallery_id, formData, {
             headers: { "content-type": "application/x-www-form-urlencoded" },

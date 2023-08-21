@@ -230,7 +230,7 @@ const AddEventForm: React.FC<addEventProps> = ({
                 />
               </FieldContainer>
               <FieldContainer>
-                <FieldLabel>Event Type{eventData.event_type}</FieldLabel>
+                <FieldLabel>Event Type</FieldLabel>
                 <SelectField
                   name={"event_type"}
                   type={"select"}
