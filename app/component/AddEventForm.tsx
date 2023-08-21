@@ -238,7 +238,7 @@ const AddEventForm: React.FC<addEventProps> = ({
                   onChange={handleInput}
                   label={"Select Event Type"}
                   options={EventType}
-                  initialValue={eventData.event_type}
+                  initialValue={eventData?.event_type}
                 />
               </FieldContainer>
               <FieldContainer>

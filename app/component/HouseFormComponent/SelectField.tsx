@@ -9,7 +9,7 @@ type Props = {
   label: string;
   placeholder?: string;
   onChange?: Function;
-  initialValue?: number | string;
+  initialValue?: any;
   options: Array<optionProps>;
 };
 
@@ -25,19 +25,21 @@ const SelectField: React.FC<Props> = ({
  
   return (
 
-    <Field<string> name={name} initialValue={""}>
+    <Field<string> name={name} initialValue={initialValue}>
       {({ value, setValue, errors }) => (
+      
         <>
+          {value && setValue(value)}
           <Select
             defaultValue={initialValue}
-            value={initialValue}
+            value={value}
             name={name}
             onChange={(e) => {
               setValue(e.target.value);
               onChange(e);
             }}
           >
-            <option value={value} >{label}</option>
+            
             {options.map((option: any, index: number) => (
               <option key={index} value={option.value}>{option.label}</option>
             ))}
