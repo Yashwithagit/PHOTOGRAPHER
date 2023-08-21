@@ -122,7 +122,7 @@ const UploadImage: React.FC<uploadImageProps> = ({
         formData.append('p_id', idValue);
         formData.append('title', galleryData?.title ? galleryData?.title : '')
         formData.append('description', galleryData?.description ? galleryData?.description : '')
-        formData.append('type', type ? String(type) : '');
+        formData.append('type', galleryData?.type ? String(galleryData?.type) : '');
         formData.append('caption', galleryData?.caption ? galleryData?.caption : '')
         await axios
           .post(API_BASE_PATH + updateGallery + galleryData.gallery_id, formData, {
