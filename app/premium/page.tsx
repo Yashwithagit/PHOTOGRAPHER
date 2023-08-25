@@ -1,12 +1,8 @@
 "use client";
 
-import { API_BASE_PATH, deletePack, packageList, service } from "@/lib/apiPath";
-import { FROM_POP_UP_TYPE } from "@/lib/constant";
+import { API_BASE_PATH, packageList, service } from "@/lib/apiPath";
 import { premiumTableHeader } from "@/lib/tableHelper";
 import { ModelDataProps } from "@/lib/types";
-import { Button, ButtonContainer } from "@/styles/globalStyles";
-import AddPackageForm from "app/component/AddPackageForm";
-import PopUp from "app/component/PopUp";
 import DashboardLayout from "app/component/DashboardLayout";
 import Table from "app/component/Table";
 import axios from "axios";
@@ -73,15 +69,15 @@ const Premium: NextPage = () => {
     });
   };
 
-    // delete package
-    const postService=async (id:number)=>{
-      const data={
-        p_id:Number(localStorage.getItem('id')),
-        package_id:id,
-        status:2
-      }
+  // delete package
+  const postService = async (id: number) => {
+    const data = {
+      p_id: Number(localStorage.getItem('id')),
+      package_id: id,
+      status: 2
+    }
     await axios
-      .post(API_BASE_PATH + service ,data, {
+      .post(API_BASE_PATH + service, data, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
       })
       .then(
@@ -122,8 +118,8 @@ const Premium: NextPage = () => {
       confirmButtonText: "Yes",
     }).then((result: any) => {
       if (result.isConfirmed) {
-        
-        
+
+
         postService(id);
       }
     });
@@ -131,7 +127,7 @@ const Premium: NextPage = () => {
 
   return (
     <DashboardLayout>
-      
+
 
       <Table
         columns={premiumTableHeader(actionHandle)}
@@ -140,11 +136,7 @@ const Premium: NextPage = () => {
         fixedPages={fixedPages}
         onClickPage={pageClick}
       />
-      {modelData.show && (
-        <PopUp popUptype={FROM_POP_UP_TYPE}>
-          <AddPackageForm onclose={handleFormClose} />
-        </PopUp>
-      )}
+
     </DashboardLayout>
   );
 };

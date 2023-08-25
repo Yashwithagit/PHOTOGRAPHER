@@ -91,7 +91,7 @@ export interface TableContainerProps {
 
 export interface optionProps {
   label: string;
-  value: number | string;
+  value: number;
 }
 
 export interface FieldLabelProps {

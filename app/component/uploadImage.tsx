@@ -16,6 +16,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import LoadingSpinner from 'app/component/LoadingSpinner';
 import { useAuth } from '@/context/auth';
 import DashboardLayout from 'app/component/DashboardLayout';
+import Thumbnail from './Thumbnail';
 
 interface uploadImageProps {
   title?: string;
@@ -41,7 +42,8 @@ const UploadImage: React.FC<uploadImageProps> = ({
 
   const formValidation = (data: uploadImageProps) => {
 
-    if (!data.title || !data.description || !data.caption || !data.image) {
+    if (!data.title || !data.description || !data.caption || (!galleryData.gallery_id && !galleryData.image) ||
+      (!data.image && type == 0)) {
       Swal.fire({
         icon: 'warning',
         title: 'info',
@@ -120,8 +122,9 @@ const UploadImage: React.FC<uploadImageProps> = ({
         formData.append('p_id', idValue);
         formData.append('title', galleryData?.title ? galleryData?.title : '')
         formData.append('description', galleryData?.description ? galleryData?.description : '')
-        formData.append('type', type ? String(type) : '');
+        formData.append('type', galleryData?.type ? String(galleryData?.type) : '');
         formData.append('caption', galleryData?.caption ? galleryData?.caption : '')
+        console.log(formData)
         await axios
           .post(API_BASE_PATH + updateGallery + galleryData.gallery_id, formData, {
             headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -241,15 +244,14 @@ const UploadImage: React.FC<uploadImageProps> = ({
                   label={"Name"}
                   acceptType='image/*'
                   // initialValue={galleryData?.image}
-                  onChange={(e:any)=>{
+                  onChange={(e: any) => {
                     setGalleryData({ ...galleryData, [e.target.name]: e.target.files[0] });
                   }}
                 />
-                {/* {type !== 0 && status && (
-                  <label>{galleryData?.image}</label>
-                )} */}
+
 
               </FieldContainer>
+              {formType !== 0 && <Thumbnail src={galleryData.url} alt="images" />}
 
               <ButtonContainer>
                 <Button type='button' onClick={() => {
