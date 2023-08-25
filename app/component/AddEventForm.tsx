@@ -297,7 +297,7 @@ const AddEventForm: React.FC<addEventProps> = ({
 
 
               </FieldContainer>
-                <Thumbnail src={eventData.url} alt="images" />
+               {eventData.url&&<Thumbnail src={eventData.url} alt="images" />}
 
               <ButtonContainer>
                 <Button

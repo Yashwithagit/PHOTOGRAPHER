@@ -39,7 +39,7 @@ const SelectField: React.FC<Props> = ({
               onChange(e);
             }}
           >
-            
+            {!initialValue&&<option value={initialValue}>Select</option>}
             {options.map((option: any, index: number) => (
               <option key={index} value={option.value}>{option.label}</option>
             ))}
