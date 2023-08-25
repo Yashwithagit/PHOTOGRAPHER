@@ -20,4 +20,5 @@ export const deleteGallery = "deleteGallery/";
 export const updateGallery = "updateGallery/";
 export const galleryDetail = "galleryDetail/";
 export const service = "service/";
+export const bookingDetail = "bookingDetail/";
 

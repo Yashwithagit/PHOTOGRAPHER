@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/auth";
-import { API_BASE_PATH, usersList } from "@/lib/apiPath";
+import { API_BASE_PATH, bookingDetail, usersList } from "@/lib/apiPath";
 import {
 
   userManagementTableHeader,
@@ -18,10 +18,11 @@ import Swal from "sweetalert2";
 const UserManagement: NextPage = () => {
   const [userList, setUserList] = useState([]);
   const [pageList, setPageList] = useState([]);
-  const [fixedPages, setFixedPages] = useState(0)
+  const [fixedPages, setFixedPages] = useState(0);
+  const p_id=Number(localStorage.getItem('id'))
   const getUserList = async () => {
     await axios
-      .get(API_BASE_PATH + usersList, {
+      .get(API_BASE_PATH + bookingDetail+p_id, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
       })
       .then(
