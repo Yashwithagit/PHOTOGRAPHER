@@ -8,6 +8,7 @@ export const userFeedback = "feedbackList";
 export const usersList = "userList";
 export const deletePack = "deletePack/";
 export const eventList = "eventList";
+export const bookingList = "eventList";
 export const addEvent = "addEvent";
 export const addGallery = "addGallery";
 export const galleryList = "galleryList";
@@ -21,4 +22,3 @@ export const updateGallery = "updateGallery/";
 export const galleryDetail = "galleryDetail/";
 export const service = "service/";
 export const bookingDetail = "bookingDetail/";
-

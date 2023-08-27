@@ -61,6 +61,37 @@ export const premiumTableHeader = (actionHandle: Function) => {
     },
   ];
 };
+export const bookingTableHeader = () => {
+  return [
+    {
+      Header: "First Name",
+      accessor: "first_name",
+    },
+    {
+      Header: "Last Name",
+      accessor: "last_name",
+    },
+    {
+      Header: "Email ID",
+      accessor: "email",
+    },
+    {
+      Header: "contact",
+      accessor: "contact",
+
+    },
+    {
+      Header: "Event Date",
+      accessor: "event_date",
+    },
+    {
+      Header: "Booked At",
+      accessor: "booked_at",
+    },
+
+
+  ];
+};
 export const eventsTableHeader = (actionHandle: Function) => {
   return [
     {
