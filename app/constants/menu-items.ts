@@ -42,6 +42,11 @@ const MENU_OPTIONS: MenuOption[] = [
     icon: MdEvent,
     url: "/events",
   },
+  {
+    name: "Bookings",
+    icon: MdEvent,
+    url: "/bookings",
+  },
   
   {
     name: "Services",
