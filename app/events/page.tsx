@@ -3,8 +3,8 @@
 import {
   API_BASE_PATH,
   eventDetail,
-  eventList,
   deleteEvent,
+  eventListS,
 } from "@/lib/apiPath";
 import { FROM_POP_UP_TYPE, actionList } from "@/lib/constant";
 import { eventsTableHeader } from "@/lib/tableHelper";
@@ -32,8 +32,9 @@ const Events: NextPage = () => {
   const [actionType, setActionType] = useState(0);
   const [fixedPages, setFixedPages] = useState(0);
   const getEventList = async () => {
+    const id = localStorage.getItem("id");
     await axios
-      .get(API_BASE_PATH + eventList, {
+      .get(API_BASE_PATH + eventListS+id, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
       })
       .then(

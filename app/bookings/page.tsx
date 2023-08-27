@@ -23,9 +23,10 @@ const Bookings: NextPage = () => {
   const [bookingLists, setBookingsList] = useState([]);
   const [pageList, setPageList] = useState([]);
   const [fixedPages, setFixedPages] = useState(0);
+  const id = localStorage.getItem("id");
   const getBookingList = async () => {
     await axios
-      .get(API_BASE_PATH + bookingList, {
+      .get(API_BASE_PATH + bookingList+id, {
         headers: { "content-type": "application/x-www-form-urlencoded" },
       })
       .then(
